@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect, useMemo } from 'react';
+import React, { Fragment, useState, useEffect, useMemo, useRef } from 'react';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Link from "../src/Link"
@@ -7,7 +7,7 @@ import { DatePicker } from '@mui/x-date-pickers'
 import { useAppContext } from '../src/appContext';
 import SIRUTA from "../src/siruta"
 import moment from 'moment';
-
+import { useReactToPrint } from 'react-to-print';
 
 
 
@@ -16,6 +16,7 @@ export default function Index() {
 
   const [ctx, setCtx] = useAppContext()
   const [citiesList, setCitiesList] = useState([])
+  const printRef = useRef()
 
   const JUDETE = useMemo(() => SIRUTA.filter(el => el.parent === 1), [])
 
@@ -36,6 +37,8 @@ export default function Index() {
       loc: ev.target.value
     }
   })
+
+  const printHandler = useReactToPrint({content: () => printRef.current})
   return (
     <Fragment>
       <Container maxWidth="lg" sx={{ position: "absolote",  background: "lightgrey" }}>
@@ -49,7 +52,7 @@ export default function Index() {
 
         </Box>
       </Container>
-      <Container maxWidth="lg" >
+      <Container maxWidth="lg" ref = {printRef}>
         {console.log("jud from context:", ctx.state.jud)}
         <Box sx={{ m:0, p: 2, border: "2px dashed grey",  height: "80vh", overflow: "hidden" }}>
           <Grid container spacing={1}>
@@ -350,9 +353,9 @@ export default function Index() {
 
         </Box>
         <Box sx = {{textAlign:"center"}}>
-          <Button>RESETEAZA</Button>
-          <Button>TIPARESTE</Button>
-          <Button>SALVEZA PDF</Button>
+          <Button disabled>RESETEAZA</Button>
+          <Button color="error" onClick = {printHandler}>TIPARESTE</Button>
+          <Button disabled>SALVEZA PDF</Button>
         </Box>
 
       </Container>

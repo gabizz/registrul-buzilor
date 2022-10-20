@@ -22,7 +22,8 @@
     "next": "12.3.1",
     "prop-types": "latest",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-to-print": "^2.14.7"
   },
   "devDependencies": {
     "eslint": "8.25.0",
