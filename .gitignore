@@ -1,0 +1,13 @@
+node_modules
+# Keep environment variables out of version control
+
+.next
+yarn-error.log
+yarn.lock
+.env.production
+package-lock.json
+prisma/*.db
+next.lock
+.DS_Store
+public/uploads
+filestorage
