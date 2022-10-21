@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect, useMemo, useRef } from 'react';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Link from "../src/Link"
-import { MenuItem, TextField, Grid, Typography, FormControlLabel, FormGroup, Checkbox, Hidden, Divider, Button, Radio, RadioGroup } from '@mui/material';
+import { MenuItem, TextField, Grid, Typography, FormControlLabel, FormGroup, Checkbox, Hidden, Divider, Button, Radio, RadioGroup, TextareaAutosize } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers'
 import { useAppContext } from '../src/appContext';
 import SIRUTA from "../src/siruta"
@@ -10,7 +10,7 @@ import moment from 'moment';
 import { useReactToPrint } from 'react-to-print';
 
 import PrintTpl from '../src/components/PrintTpl';
-import { b64_encode } from '../src/b64';
+import { b64_decode, b64_encode } from '../src/b64';
 import { makeStyles } from '@mui/styles';
 
 
@@ -29,6 +29,12 @@ export default function Index() {
   const classes = useStyles()
 
   const JUDETE = useMemo(() => SIRUTA.filter(el => el.parent === 1), [])
+
+  useEffect(()=>{
+    let b64 = b64_encode(JSON.stringify(ctx.state))
+    setCtx({ b64: b64} )
+  }, [ctx.state])
+
 
 
 
@@ -55,6 +61,15 @@ export default function Index() {
   })
 
   const printHandler = useReactToPrint({content: () => printRef.current})
+
+  const decodeHandler = () => {
+     let decoded = b64_decode(ctx.b64)
+     console.log("decodedL ", JSON.parse(decoded))
+     
+     setCtx({state: JSON.parse(decoded)})
+
+    }
+
   return (
     <Fragment>
 
@@ -420,11 +435,27 @@ export default function Index() {
                 <Grid item sm = {12} style = {{wordBreak: "break-all", padding: "10px", border: "1px solid green", background: "lightgrey"}}>
                   <strong>Codificarea formularului (in vederea salvării și transmiterii datelor acestuia)</strong>
                   <br/>
-                {ctx.state && b64_encode(JSON.stringify(Object.keys(ctx.state)
-                .reduce( (acc, el)=>{
-                 return  acc += "|"+ ctx.state[el]
-                }, "")))}
-              
+                  <Grid container>
+                    <Grid item sm = {true}>
+                    <TextareaAutosize style={{width: "100%", height: "12.2vh"}} fullWidth value= {ctx.b64}
+                      onChange = {ev => setCtx({b64: ev.target.value})}
+                    >
+                    
+                    
+                
+                
+                </TextareaAutosize>
+                    </Grid>
+                    <Grid item>
+                      <Button 
+                        variant="contained" collor="error"
+                        onClick = {decodeHandler}  
+                        >
+                          DECODEAZĂ <br/>IN <br/>FORMULAR
+                      </Button>
+                    </Grid>
+                  </Grid>
+
                 </Grid>
 
                 {/* <Grid item sm={12} sx={{ p: 1, background: "beige", fontSize: "0.7em", fontWeight: 400 }}>
