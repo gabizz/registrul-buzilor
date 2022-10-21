@@ -18,8 +18,28 @@ moment.locale("ro")
 
 const INITIAL_DATA = {
   dt: moment().format("YYYY-MM-DD"),
-  jud: 29,
-  loc: 0
+  jud: 0,
+  loc: 0,
+  r1: 1, //tip persoana, juridica=true, fizica-false
+  r2: "", //nume
+  r3: "", //cnp/cui
+  r4: "", //adresa
+  r5: "", //telefon
+  r6: "", //email
+  r7: "", // PJ ONLY! caen
+  r8: "", // PJ ONLY! descriere activitate soc.
+  r9: 0, // PJ ONLY! aut.contr.?
+  r10: "", // PJ ONLY! nr. aut.contr.
+  r11: 1, // colectare=true, epurare=false
+  r111: "", // capacitate,
+  r12: 0, //sursa de apa
+  r13: "", //descriere sistem evacuare
+  r14: "", //descriere mod epurare
+  r15: "", //desc. monitorizare descarcare ape uzate,
+  r161: "", //contact nr
+  r162: "", //contract dt
+
+
 
 }
 
