@@ -18,13 +18,7 @@ import html2canvas from 'html2canvas';
 
 
 
-const useStyles = makeStyles(theme => ({
-  printable: {
-    
-    "@media screen": {display: "block", border: "10px solid red",},
-    "@media print": {color: "magenta"},
-  }
-}))
+
 
 export default function Index() {
 
@@ -32,7 +26,6 @@ export default function Index() {
   const [citiesList, setCitiesList] = useState([])
   const printRef = useRef()
   const copyRef = useRef()
-  const classes = useStyles()
   const [notification, setNotification] = useState()
 
   const JUDETE = useMemo(() => SIRUTA.filter(el => el.parent === 1), [])
@@ -521,11 +514,9 @@ export default function Index() {
 
       </Container>
 
-      <div className = {classes.printable}>
         <div ref = {printRef}>
           <PrintTpl siruta = {SIRUTA} />
          </div>
-      </div>
 
          {notification && <Notification {...{...notification}}  duration={3000} />}
     </Fragment>
