@@ -12,12 +12,17 @@ import { useReactToPrint } from 'react-to-print';
 import PrintTpl from '../src/components/PrintTpl';
 import { b64_decode, b64_encode } from '../src/b64';
 import { makeStyles } from '@mui/styles';
+import Notification from '../src/components/Notification';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 
 
 const useStyles = makeStyles(theme => ({
-  visuallyHidden: {
-    "@media screen": {display: "none"}
+  printable: {
+    
+    "@media screen": {display: "block", border: "10px solid red",},
+    "@media print": {color: "magenta"},
   }
 }))
 
@@ -26,7 +31,9 @@ export default function Index() {
   const [ctx, setCtx] = useAppContext()
   const [citiesList, setCitiesList] = useState([])
   const printRef = useRef()
+  const copyRef = useRef()
   const classes = useStyles()
+  const [notification, setNotification] = useState()
 
   const JUDETE = useMemo(() => SIRUTA.filter(el => el.parent === 1), [])
 
@@ -69,6 +76,32 @@ export default function Index() {
      setCtx({state: JSON.parse(decoded)})
 
     }
+
+    const clipboardHandler = ev => {
+      copyRef.current.select()
+      document.execCommand('copy');
+      ev.target.focus();
+      setNotification({
+        open: true, 
+        message: "Formularul codificat a fost copiat în clipboard!",
+        hash : parseInt(Math.random(5)*10000)
+      })
+    }
+
+    const pdfHandler =  (filename) => async () => {
+      const element = printRef.current;
+      const padding = 10
+      const pdf = new jsPDF({orientation: 'p', unit:'mm', size: [297, 210]})
+      const  canvas = await html2canvas(element)
+      const imgData = canvas.toDataURL("image/png");
+      // console.log("imgData: \n",imgData)
+      const imgProps= pdf.getImageProperties(imgData);
+      const pdfWidth = pdf.internal.pageSize.getWidth()-padding;
+      const pdfHeight = (imgProps.height * pdfWidth) / (imgProps.width);
+  
+      pdf.addImage(imgData, 'PNG', padding, padding, pdfWidth-padding, pdfHeight-padding, undefined, "FAST");
+      pdf.save(filename+'.pdf');    
+    };
 
   return (
     <Fragment>
@@ -434,11 +467,17 @@ export default function Index() {
                 </Grid>
                 <Grid item sm = {12} style = {{wordBreak: "break-all", padding: "10px", border: "1px solid green", background: "lightgrey"}}>
                   <strong>Codificarea formularului (in vederea salvării și transmiterii datelor acestuia)</strong>
+                  <a href = "" onClick = {ev => {ev.preventDefault(); clipboardHandler(ev);}}>copiaza</a>
                   <br/>
                   <Grid container>
                     <Grid item sm = {true}>
-                    <TextareaAutosize style={{width: "100%", height: "12.2vh"}} fullWidth value= {ctx.b64}
-                      onChange = {ev => setCtx({b64: ev.target.value})}
+                    <TextareaAutosize 
+                        style={{width: "100%", height: "12.2vh"}} 
+                        fullWidth 
+                        value= {ctx.b64}
+                        ref = {copyRef}
+                        
+                        onChange = {ev => setCtx({b64: ev.target.value})}
                     >
                     
                     
@@ -477,15 +516,18 @@ export default function Index() {
         <Box sx = {{textAlign:"center"}}>
           <Button disabled>RESETEAZA</Button>
           <Button color="error" onClick = {printHandler}>TIPARESTE</Button>
-          <Button disabled>SALVEZA PDF</Button>
+          <Button onClick = {pdfHandler("cerere")}>SALVEZA PDF</Button>
         </Box>
 
       </Container>
 
-
-      <div ref = {printRef}  className = {classes.visuallyHidden}>
+      <div className = {classes.printable}>
+        <div ref = {printRef}>
           <PrintTpl siruta = {SIRUTA} />
          </div>
+      </div>
+
+         {notification && <Notification {...{...notification}}  duration={3000} />}
     </Fragment>
 
   );

@@ -22,12 +22,11 @@ export default function PrintTpl({ siruta }) {
   }
 
   return (
-    <div className='printable'>
-      <Styled>
+    <Styles>
 
 
 
-        <div style={{ width: "100%", padding: "10mm 10mm 10mm 20mm" }}>
+        <div style={{ width: "100%"}} className = "printable">
 
           <div align="right">Nr............... din...........................</div>
           <div align="center">
@@ -63,14 +62,14 @@ export default function PrintTpl({ siruta }) {
             <strong>2. Numele și prenumele dumneavoastră/Denumirea entității juridice și număr persoane deservite de SIA</strong>
             <br />
             <div style={{ paddingLeft: "40px" }}>
-              <i>{ctx.state.r2 || "............................................................................................."} </i>
+              <i>{ctx.state.r2 || "..................................................................................................."} </i>
             </div>
           </div>
           <div>
             <strong>3. CNP/CUI</strong>
             <br />
             <div style={{ paddingLeft: "40px" }}>
-              <i>{ctx.state.r3 || "............................................................................................."} </i>
+              <i>{ctx.state.r3 || "..................................................................................................."} </i>
             </div>
           </div>
           <div>
@@ -78,7 +77,7 @@ export default function PrintTpl({ siruta }) {
             <small><i>Strada, numărul, detaliile imobilului (bloc, etaj, apartament), oraș, județ</i></small>
             <br />
             <div style={{ paddingLeft: "40px" }}>
-              <i>{ctx.state.r4 || "............................................................................................."} </i>
+              <i>{ctx.state.r4 || "..................................................................................................."} </i>
             </div>
           </div>
           <div>
@@ -86,7 +85,7 @@ export default function PrintTpl({ siruta }) {
             {/* <small><i>Strada, numărul, detaliile imobilului (bloc, etaj, apartament), oraș, județ</i></small> */}
   
             <div style={{ paddingLeft: "40px" }}>
-              <i>{ctx.state.r5 || "............................................................................................."} </i>
+              <i>{ctx.state.r5 || "..................................................................................................."} </i>
             </div>
           </div>
           <div>
@@ -94,7 +93,7 @@ export default function PrintTpl({ siruta }) {
             {/* <small><i>Strada, numărul, detaliile imobilului (bloc, etaj, apartament), oraș, județ</i></small> */}
   
             <div style={{ paddingLeft: "40px" }}>
-              <i>{ctx.state.r6 || "............................................................................................."} </i>
+              <i>{ctx.state.r6 || "..................................................................................................."} </i>
             </div>
           </div>
           <div>
@@ -102,7 +101,7 @@ export default function PrintTpl({ siruta }) {
             <small><i>IMPORTANT! Acest câmp se completează numai în cazul PERSOANELOR JURIDICE</i></small>
             <br />
             <div style={{ paddingLeft: "40px" }}>
-              <i>{ctx.state.r7 || "............................................................................................."} </i>
+              <i>{ctx.state.r7 || "..................................................................................................."} </i>
             </div>
           </div>
           <div>
@@ -110,7 +109,7 @@ export default function PrintTpl({ siruta }) {
             <small><i>IMPORTANT! Acest câmp se completează numai în cazul PERSOANELOR JURIDICE</i></small>
             <br />
             <div style={{ paddingLeft: "40px" }}>
-              <i>{ctx.state.r8 || "............................................................................................."} </i>
+              <i>{ctx.state.r8 || "..................................................................................................."} </i>
             </div>
           </div>
           <div>
@@ -133,7 +132,7 @@ export default function PrintTpl({ siruta }) {
             <small><i>IMPORTANT! Acest câmp se completează numai în cazul PERSOANELOR JURIDICE</i></small>
             <br />
             <div style={{ paddingLeft: "40px" }}>
-              <i>{ctx.state.r10 || "............................................................................................."} </i>
+              <i>{ctx.state.r10 || "..................................................................................................."} </i>
             </div>
           </div>
           <div>
@@ -174,7 +173,7 @@ export default function PrintTpl({ siruta }) {
             <strong>13. Descrieți sistemul de evacuare a apelor uzate menajere de care beneficiați</strong><br/>
             <br />
             <div style={{ paddingLeft: "40px" }}>
-              <i>{ctx.state.r4 || "............................................................................................."} </i>
+              <i>{ctx.state.r4 || "..................................................................................................."} </i>
             </div>
           </div>
           <div>
@@ -182,7 +181,7 @@ export default function PrintTpl({ siruta }) {
             <small><i>Vă rugăm elaborați un răspuns detaliat.</i></small>
             <br />
             <div style={{ paddingLeft: "40px" }}>
-              <i>{ctx.state.r4 || "............................................................................................."} </i>
+              <i>{ctx.state.r4 || "..................................................................................................."} </i>
             </div>
           </div>
           <div>
@@ -190,7 +189,7 @@ export default function PrintTpl({ siruta }) {
             <small><i>Vă rugăm să ne oferiți rezultatele ultimelor analize efectuate.</i></small>
             <br />
             <div style={{ paddingLeft: "40px" }}>
-              <i>{ctx.state.r4 || "............................................................................................."} </i>
+              <i>{ctx.state.r4 || "..................................................................................................."} </i>
             </div>
           </div>
           <div>
@@ -214,35 +213,33 @@ export default function PrintTpl({ siruta }) {
           </Grid>
           <br/>
           <br/>
-          <div>
+          <div style = {{width: "100%", wordWrap: "break-word", textAlign: "justify", textJustify: "inter-word"}}>
           Prin completarea și transmiterea acestui formular sunteți de acord cu prelucrarea datelor cu caracter personal în scopul 
           înscrierii în REGISTRUL DE EVIDENȚĂ A SISTEMELOR INDIVIDUALE ADECVATE PENTRU COLECTAREA APELOR UZATE al localității {loc}, județul {jud}. Prelucrarea datelor cu caracter personal se va realiza cu respectarea prevederilor Regulamentului nr. 679/20166 adoptat de Parlamentul European și Consiliul Uniunii Europene pentru aprobarea normelor privind protecția în ceea ce privește prelucrarea datelor cu caracter personal, precum și a normelor referitoare la libera circulație a acestui tip de date cu caracter personal.
           </div>
 
         </div>
-      </Styled>
-    </div>
+    </Styles>
   )
 }
 
-const Styled = styled.div`{
+export const Styles = styled.div`
 
-  @media screen: {
-    .printable { display: none;}
+@media print {
+        @page { 
+            size:  A4 portrait;
+            margin: 10mm 10mm 10mm 30mm; 
+        };
+        div.printable{
+            zoom: 0.65;
+            div {
+                page-break-inside: avoid!important;
+                break-inside: avoid!important;
+                
+            }
+        }
 }
-@media print: {
-  @page {
-    size: A4 portrait;
-    margin: 1cm 1cm 1cm 2cm;
-  }
-  
-  html, body {
-    height: initial !important;
-    overflow: initial !important;
-    -webkit-print-color-adjust: exact;
-  }
-
-  
+@media screen {
+  display: none;
 }
-
 `
