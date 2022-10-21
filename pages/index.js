@@ -417,7 +417,9 @@ export default function Index() {
                   </Grid>
                   <br />
                 </Grid>
-                <Grid item sm = {12} style = {{wordBreak: "break-all"}}>
+                <Grid item sm = {12} style = {{wordBreak: "break-all", padding: "10px", border: "1px solid green", background: "lightgrey"}}>
+                  <strong>Codificarea formularului (in vederea salvării și transmiterii datelor acestuia)</strong>
+                  <br/>
                 {ctx.state && b64_encode(JSON.stringify(Object.keys(ctx.state)
                 .reduce( (acc, el)=>{
                  return  acc += "|"+ ctx.state[el]
@@ -425,24 +427,10 @@ export default function Index() {
               
                 </Grid>
 
-                <Grid item sm={12} sx={{ p: 1, background: "beige", fontSize: "0.7em", fontWeight: 400 }}>
+                {/* <Grid item sm={12} sx={{ p: 1, background: "beige", fontSize: "0.7em", fontWeight: 400 }}>
                   Prin completarea și transmiterea acestui formular sunteți de acord cu prelucrarea datelor cu caracter personal în scopul înscrierii în REGISTRUL DE EVIDENȚĂ A SISTEMELOR INDIVIDUALE ADECVATE PENTRU COLECTAREA APELOR UZATE al Comunei Șagu, județul Arad. Prelucrarea datelor cu caracter personal se va realiza cu respectarea prevederilor Regulamentului nr. 679/20166 adoptat de Parlamentul European și Consiliul Uniunii Europene pentru aprobarea normelor privind protecția în ceea ce privește prelucrarea datelor cu caracter personal, precum și a normelor referitoare la libera circulație a acestui tip de date cu caracter personal.
-                </Grid>
-                <Grid item sm={12}>
-                  <br /><br />
-                  <Grid container>
-                    <Grid item sm={6} align="center">
-                      DATA,
-                      <br />
-                      <strong>{moment(ctx.state.dt).format("DD.MM.YYYY")}</strong>
-                    </Grid>
-                    <Grid item sm={6} align="center">
-                      SEMNĂTURA,
-                      <br />
-                      ..........................................
-                    </Grid>
-                  </Grid>
-                </Grid>
+                </Grid> */}
+
 
 
               </Box>

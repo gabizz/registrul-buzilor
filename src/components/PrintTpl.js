@@ -212,7 +212,12 @@ export default function PrintTpl({ siruta }) {
                 <strong>. . . . . . . . . . . . . . . . . . . .</strong>
               </Grid>
           </Grid>
-
+          <br/>
+          <br/>
+          <div>
+          Prin completarea și transmiterea acestui formular sunteți de acord cu prelucrarea datelor cu caracter personal în scopul 
+          înscrierii în REGISTRUL DE EVIDENȚĂ A SISTEMELOR INDIVIDUALE ADECVATE PENTRU COLECTAREA APELOR UZATE al localității {loc}, județul {jud}. Prelucrarea datelor cu caracter personal se va realiza cu respectarea prevederilor Regulamentului nr. 679/20166 adoptat de Parlamentul European și Consiliul Uniunii Europene pentru aprobarea normelor privind protecția în ceea ce privește prelucrarea datelor cu caracter personal, precum și a normelor referitoare la libera circulație a acestui tip de date cu caracter personal.
+          </div>
 
         </div>
       </Styled>
