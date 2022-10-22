@@ -15,13 +15,22 @@ import { makeStyles } from '@mui/styles';
 import Notification from '../src/components/Notification';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { FaBan, FaCut, FaCopy, FaPaste } from "react-icons/fa" 
 
 
 
+const useStyles = makeStyles( theme => ({
+  printOnly: {
+    "@media screen": {
+      display: "none"
+    }
+  }
+}))
 
 
 export default function Index() {
 
+  const classes = useStyles()
   const [ctx, setCtx] = useAppContext()
   const [citiesList, setCitiesList] = useState([])
   const printRef = useRef()
@@ -70,7 +79,13 @@ export default function Index() {
 
     }
 
-    const clipboardHandler = ev => {
+
+    const clearHandler = ev => {
+       setCtx({b64: ""})
+    }
+
+
+    const copyHandler = cut => ev => {
       copyRef.current.select()
       document.execCommand('copy');
       ev.target.focus();
@@ -79,6 +94,12 @@ export default function Index() {
         message: "Formularul codificat a fost copiat în clipboard!",
         hash : parseInt(Math.random(5)*10000)
       })
+      if ( cut ) { setCtx({b64: ""})}
+    }
+
+    const pasteHandler = async ev => {
+      let paste = await navigator.clipboard.readText();
+      setCtx({b64: paste})
     }
 
     const pdfHandler =  (filename) => async () => {
@@ -87,7 +108,6 @@ export default function Index() {
       const pdf = new jsPDF({orientation: 'p', unit:'mm', size: [297, 210]})
       const  canvas = await html2canvas(element)
       const imgData = canvas.toDataURL("image/png");
-      // console.log("imgData: \n",imgData)
       const imgProps= pdf.getImageProperties(imgData);
       const pdfWidth = pdf.internal.pageSize.getWidth()-padding;
       const pdfHeight = (imgProps.height * pdfWidth) / (imgProps.width);
@@ -460,13 +480,30 @@ export default function Index() {
                 </Grid>
                 <Grid item sm = {12} style = {{wordBreak: "break-all", padding: "10px", border: "1px solid green", background: "lightgrey"}}>
                   <strong>Codificarea formularului (in vederea salvării și transmiterii datelor acestuia)</strong>
-                  <a href = "" onClick = {ev => {ev.preventDefault(); clipboardHandler(ev);}}>copiaza</a>
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  <Button 
+                    startIcon = {<FaBan color ="RED"/>}
+                    onClick = {clearHandler}>GOLEȘTE </Button>
+                  &nbsp;&nbsp;
+                  <Button 
+                    startIcon = {<FaCut color ="green"/>}
+                    onClick = {copyHandler(true)}>TAIE </Button>
+                  &nbsp;&nbsp;
+                  <Button 
+                    size="small"
+                    startIcon = {<FaCopy color ="navy"/>}
+                    onClick = {copyHandler()}>COPIAZĂ </Button>
+                  &nbsp;&nbsp;
+                  <Button 
+                    startIcon = {<FaPaste color ="brown"/>}
+                    onClick = {pasteHandler}>LIPEȘTE </Button>
+                  {' '}
+
                   <br/>
                   <Grid container>
                     <Grid item sm = {true}>
                     <TextareaAutosize 
-                        style={{width: "100%", height: "12.2vh"}} 
-                        fullWidth 
+                        style={{width: "100%", height: "12.2vh"}}  
                         value= {ctx.b64}
                         ref = {copyRef}
                         
@@ -511,12 +548,14 @@ export default function Index() {
           <Button color="error" onClick = {printHandler}>TIPARESTE</Button>
           <Button onClick = {pdfHandler("cerere")}>SALVEZA PDF</Button>
         </Box>
-
+<hr/>
+<br/><br/>
       </Container>
-
-        <div ref = {printRef}>
-          <PrintTpl siruta = {SIRUTA} />
+        <Container maxWidth="sm">
+        <div ref = {printRef} >
+          <PrintTpl siruta = {SIRUTA}/>
          </div>
+        </Container>
 
          {notification && <Notification {...{...notification}}  duration={3000} />}
     </Fragment>

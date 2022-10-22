@@ -240,6 +240,6 @@ export const Styles = styled.div`
         }
 }
 @media screen {
-  display: none;
+  
 }
 `
