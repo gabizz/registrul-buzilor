@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect, useMemo, useRef } from 'react';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Link from "../src/Link"
-import { MenuItem, TextField, Grid, Typography, FormControlLabel, FormGroup, Checkbox, Hidden, Divider, Button, Radio, RadioGroup, TextareaAutosize } from '@mui/material';
+import { MenuItem, TextField, Grid, Typography, FormControlLabel,  Divider, Button, Radio, RadioGroup, TextareaAutosize } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers'
 import { useAppContext } from '../src/appContext';
 import SIRUTA from "../src/siruta"
@@ -15,7 +15,9 @@ import { makeStyles } from '@mui/styles';
 import Notification from '../src/components/Notification';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-import { FaBan, FaCut, FaCopy, FaPaste } from "react-icons/fa" 
+import { FaBan, FaCut, FaCopy, FaPaste, FaInfoCircle } from "react-icons/fa" 
+import InstructionsModal from '../src/components/InstructionsModal';
+
 
 
 
@@ -36,6 +38,7 @@ export default function Index() {
   const printRef = useRef()
   const copyRef = useRef()
   const [notification, setNotification] = useState()
+  const [infoModal, setInfoModal] = useState()
 
   const JUDETE = useMemo(() => SIRUTA.filter(el => el.parent === 1), [])
 
@@ -121,13 +124,18 @@ export default function Index() {
 
       <Container maxWidth="lg" sx={{ position: "absolote",  background: "lightgrey" }}>
         <Box sx={{ my: 1, position: "relative" }}>
+        <div style = {{float: "right"}}>
+          <FaInfoCircle onClick= {()=>setInfoModal(true)} size="2em" color="blue" style = {{marginTop: "0.3em"}}/>
+
+        </div>
           <Typography variant="h5" component="h1" gutterBottom sx={{ textAlign: "center", fontSize: "1rem" }}>
             DECLARAȚIE DE ÎNREGISTRARE<br />
             în Registrul de evidență a sistemelor individuale adecvate pentru colectarea apelor uzate
 
           </Typography>
-
-
+          
+          
+          
         </Box>
       </Container>
       <Container maxWidth="lg">
@@ -528,7 +536,7 @@ export default function Index() {
                 </Grid>
 
                 {/* <Grid item sm={12} sx={{ p: 1, background: "beige", fontSize: "0.7em", fontWeight: 400 }}>
-                  Prin completarea și transmiterea acestui formular sunteți de acord cu prelucrarea datelor cu caracter personal în scopul înscrierii în REGISTRUL DE EVIDENȚĂ A SISTEMELOR INDIVIDUALE ADECVATE PENTRU COLECTAREA APELOR UZATE al Comunei Șagu, județul Arad. Prelucrarea datelor cu caracter personal se va realiza cu respectarea prevederilor Regulamentului nr. 679/20166 adoptat de Parlamentul European și Consiliul Uniunii Europene pentru aprobarea normelor privind protecția în ceea ce privește prelucrarea datelor cu caracter personal, precum și a normelor referitoare la libera circulație a acestui tip de date cu caracter personal.
+                  Prin completarea și transmiterea acestui formular sunteți de acord cu prelucrarea datelor cu caracter personal în scopul înscrierii în REGISTRUL DE EVIDENȚĂ A SISTEMELOR INDIVIDUALE ADECVATE PENTRU COLECTAREA APELOR UZATE al Comunei Șagu, județul Arad. Prelucrarea datelor cu caracter personal se va realiza cu respectarea prevederilor Regulamentului nr. 679/2016 adoptat de Parlamentul European și Consiliul Uniunii Europene pentru aprobarea normelor privind protecția în ceea ce privește prelucrarea datelor cu caracter personal, precum și a normelor referitoare la libera circulație a acestui tip de date cu caracter personal.
                 </Grid> */}
 
 
@@ -558,6 +566,7 @@ export default function Index() {
         </Container>
 
          {notification && <Notification {...{...notification}}  duration={3000} />}
+         {infoModal && <InstructionsModal open = {infoModal} onClose = {()=>setInfoModal(null)} />}
     </Fragment>
 
   );
