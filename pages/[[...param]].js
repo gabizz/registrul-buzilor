@@ -586,8 +586,6 @@ export const getServerSideProps = async (ctx) => {
 
   const { query } = ctx || {}
   
-
-    console.log("xxx:",  query)
     return {
       props: {
         b64: query.param ? query.param[0]: null

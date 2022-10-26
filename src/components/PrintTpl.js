@@ -220,7 +220,12 @@ const PrintTpl = forwardRef(({ siruta }, ref) => {
         </div>
         {ctx && ctx.b64 && (
           <div align="center" style={{ marginTop: "50px" }}>
-
+            <Typography variant = "caption">
+             Codul QR de mai jos include o referință dinamică spre formularul completat de Dvs.<br/>
+              Întrucât noi NU stocăm sub nici o formă datele pe care le-ați completat, vă rugăm să îl tipăriți sau să îl salvați în 
+              format PDF. Ulterior, prin scanarea codului, formularul se va autocompleta cu datele completate de Dvs. în acest moment.
+            </Typography>
+            <br/><br/>
             <QRCode
               size={256}
               style={{ height: "auto", maxWidth: "50%", width: "50%" }}
