@@ -30,9 +30,12 @@ const INITIAL_DATA = {
   r8: "", // PJ ONLY! descriere activitate soc.
   r9: 0, // PJ ONLY! aut.contr.?
   r10: "", // PJ ONLY! nr. aut.contr.
-  r11: 1, // colectare=true, epurare=false
+ 
   r111: "", // capacitate,
+  
   r12: 0, //sursa de apa
+  r121: 0,
+  r122: 0,
   r13: "", //descriere sistem evacuare
   r14: "", //descriere mod epurare
   r15: "", //desc. monitorizare descarcare ape uzate,

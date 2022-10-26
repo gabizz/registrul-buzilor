@@ -2,26 +2,35 @@ import React, { Fragment, useState, useEffect, useMemo, useRef } from 'react';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Link from "../src/Link"
-import { MenuItem, TextField, Grid, Typography, FormControlLabel,  Divider, Button, Radio, RadioGroup, TextareaAutosize } from '@mui/material';
+import { MenuItem, TextField, Grid, Typography, FormControlLabel, Divider, Button, Radio, RadioGroup, TextareaAutosize, Checkbox, IconButton } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers'
 import { useAppContext } from '../src/appContext';
 import SIRUTA from "../src/siruta"
 import moment from 'moment';
-import { useReactToPrint } from 'react-to-print';
+
 
 import PrintTpl from '../src/components/PrintTpl';
 import { b64_decode, b64_encode } from '../src/b64';
 import { makeStyles } from '@mui/styles';
 import Notification from '../src/components/Notification';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
-import { FaBan, FaCut, FaCopy, FaPaste, FaInfoCircle } from "react-icons/fa" 
+
+import { FaBan, FaCut, FaCopy, FaPaste, FaInfoCircle } from "react-icons/fa"
 import InstructionsModal from '../src/components/InstructionsModal';
+import PrintPreviewModal from '../src/components/PrintPreviewModal';
+import { MdPrint } from "react-icons/md"
+
+const decoder = (string) => {
+  let res = null
+  try {
+    res = b64_decode(string)
+  } catch (error) {
+    res = null
+  }
+  return res
+}
 
 
-
-
-const useStyles = makeStyles( theme => ({
+const useStyles = makeStyles(theme => ({
   printOnly: {
     "@media screen": {
       display: "none"
@@ -30,33 +39,45 @@ const useStyles = makeStyles( theme => ({
 }))
 
 
-export default function Index() {
+export default function Index({b64}) {
 
   const classes = useStyles()
   const [ctx, setCtx] = useAppContext()
   const [citiesList, setCitiesList] = useState([])
-  const printRef = useRef()
+
   const copyRef = useRef()
   const [notification, setNotification] = useState()
   const [infoModal, setInfoModal] = useState()
+  const [printModal, setPrintModal] = useState()
 
   const JUDETE = useMemo(() => SIRUTA.filter(el => el.parent === 1), [])
 
-  useEffect(()=>{
+  useEffect(() => {
+    
     let b64 = b64_encode(JSON.stringify(ctx.state))
-    setCtx({ b64: b64} )
+    setCtx({ b64: b64 })
   }, [ctx.state])
+
+  useEffect(() => {
+    if (b64) {
+      let decoded = decoder(b64)
+      if (decoded) {
+        setCtx({ state: JSON.parse(decoded), b64: b64 })
+      }
+     
+    }
+  }, [b64])
 
 
 
 
   const dtHandler = dt => ev => setCtx({ state: { ...ctx.state, [dt]: ev } })
 
-  const textHandler = name => ev => setCtx({ state: {...ctx.state, [name]: ev.target.value }})
+  const textHandler = name => ev => setCtx({ state: { ...ctx.state, [name]: ev.target.value } })
 
   const radioHandler = name => ev => {
     console.log("Ev:", ev.target.value)
-    setCtx({ state: {...ctx.state, [name]: ev.target.value }})
+    setCtx({ state: { ...ctx.state, [name]: ev.target.value } })
   }
   const judChangeHandler = ev => {
     const judId = ev.target.value
@@ -65,6 +86,8 @@ export default function Index() {
     setCtx({ state: { ...ctx.state, jud: judId, loc: cities && cities[0]['siruta'] } })
   }
 
+  const checkboxHandler = name => ev => setCtx({ state: { ...ctx.state, [name]: ev.target.checked } })
+
   const locChangeHandler = ev => setCtx({
     state: {
       ...ctx.state,
@@ -72,78 +95,68 @@ export default function Index() {
     }
   })
 
-  const printHandler = useReactToPrint({content: () => printRef.current})
+
 
   const decodeHandler = () => {
-     let decoded = b64_decode(ctx.b64)
-     console.log("decodedL ", JSON.parse(decoded))
-     
-     setCtx({state: JSON.parse(decoded)})
-
-    }
+    let decoded = b64_decode(ctx.b64)
+    setCtx({ state: JSON.parse(decoded) })
+  }
 
 
-    const clearHandler = ev => {
-       setCtx({b64: ""})
-    }
+  const clearHandler = ev => {
+    setCtx({ b64: "" })
+  }
 
 
-    const copyHandler = cut => ev => {
-      copyRef.current.select()
-      document.execCommand('copy');
-      ev.target.focus();
-      setNotification({
-        open: true, 
-        message: "Formularul codificat a fost copiat în clipboard!",
-        hash : parseInt(Math.random(5)*10000)
-      })
-      if ( cut ) { setCtx({b64: ""})}
-    }
+  const copyHandler = cut => ev => {
+    copyRef.current.select()
+    document.execCommand('copy');
+    ev.target.focus();
+    setNotification({
+      open: true,
+      message: "Formularul codificat a fost copiat în clipboard!",
+      hash: parseInt(Math.random(5) * 10000)
+    })
+    if (cut) { setCtx({ b64: "" }) }
+  }
 
-    const pasteHandler = async ev => {
-      let paste = await navigator.clipboard.readText();
-      setCtx({b64: paste})
-    }
+  const pasteHandler = async ev => {
+    let paste = await navigator.clipboard.readText();
+    setCtx({ b64: paste })
+  }
 
-    const pdfHandler =  (filename) => async () => {
-      const element = printRef.current;
-      const padding = 10
-      const pdf = new jsPDF({orientation: 'p', unit:'mm', size: [297, 210]})
-      const  canvas = await html2canvas(element)
-      const imgData = canvas.toDataURL("image/png");
-      const imgProps= pdf.getImageProperties(imgData);
-      const pdfWidth = pdf.internal.pageSize.getWidth()-padding;
-      const pdfHeight = (imgProps.height * pdfWidth) / (imgProps.width);
-  
-      pdf.addImage(imgData, 'PNG', padding, padding, pdfWidth-padding, pdfHeight-padding, undefined, "FAST");
-      pdf.save(filename+'.pdf');    
-    };
+
 
   return (
     <Fragment>
 
-      <Container maxWidth="lg" sx={{ position: "absolote",  background: "lightgrey" }}>
+      <Container maxWidth="lg" sx={{ position: "absolote", background: "lightgrey" }}>
         <Box sx={{ my: 1, position: "relative" }}>
-        <div style = {{float: "right"}}>
-          <FaInfoCircle onClick= {()=>setInfoModal(true)} size="2em" color="blue" style = {{marginTop: "0.3em"}}/>
 
-        </div>
           <Typography variant="h5" component="h1" gutterBottom sx={{ textAlign: "center", fontSize: "1rem" }}>
             DECLARAȚIE DE ÎNREGISTRARE<br />
             în Registrul de evidență a sistemelor individuale adecvate pentru colectarea apelor uzate
 
           </Typography>
-          
-          
-          
+
+
+
         </Box>
       </Container>
       <Container maxWidth="lg">
-     
-        <Box sx={{ m:0, p: 2, border: "2px dashed grey",  height: "80vh", overflow: "hidden" }} >
-          
+        <div style={{ width: "100%", textAlign: "right", display: "flex", alignItems: "center", justifyContent: "flex-end", marginBottom: "5px" }} >
+          <Button
+            color="error" size="small" variant="outlined" onClick={() => setPrintModal(true)} style={{ marginRight: "5px" }}
+            startIcon={<MdPrint />}
+          >TIPĂRIRE</Button>
+          <IconButton size="small" color="info" onClick={() => setInfoModal(true)}>
+          <FaInfoCircle  size="1.5em" />
+          </IconButton>
+        </div>
+        <Box sx={{ m: 0, p: 2, border: "2px dashed grey", height: "80vh", overflow: "hidden" }} >
+
           <Grid container spacing={1} >
-            
+
             <Grid item xs={12} sm={3}>
               <TextField
                 select value={ctx.state.jud} onChange={judChangeHandler} fullWidth size="small"
@@ -169,7 +182,7 @@ export default function Index() {
               </TextField>
             </Grid>
             <Grid item xs={true} />
-            
+
             <Grid item xs={12} sm={3}>
               <DatePicker
                 type="date"
@@ -179,7 +192,7 @@ export default function Index() {
                 renderInput={(params) => <TextField size="small" {...params} />}
               />
             </Grid>
-            <Grid item sm = {12}><Divider/></Grid>
+            <Grid item sm={12}><Divider /></Grid>
             {/* <Hidden smDown>
               <Grid item sm={12}>
                 <Typography variant="subtitle1" align="center" fontWeight={900} fontSize="0.9rem">
@@ -201,40 +214,40 @@ export default function Index() {
                     </Typography>
                     <RadioGroup
                       row
-                      value = {ctx.state.r1}
-                      onChange = {radioHandler("r1")}
+                      value={ctx.state.r1}
+                      onChange={radioHandler("r1")}
                     >
-                    <FormControlLabel
-                      label="PERSOANA FIZICA"
-                      control={<Radio value = {1}/>}
-                    />
-                    <FormControlLabel
-                      label="PERSOANA JURIDICĂ"
-                      control={<Radio  value= {0}/>}
-                    />
+                      <FormControlLabel
+                        label="PERSOANA FIZICA"
+                        control={<Radio value={1} />}
+                      />
+                      <FormControlLabel
+                        label="PERSOANA JURIDICĂ"
+                        control={<Radio value={0} />}
+                      />
                     </RadioGroup>
-                    
+
                   </Grid>
                   <Grid item sm={12}>
                     <Typography variant="subtitle2" fontWeight={800}>
                       2. Numele și prenumele dumneavoastră/Denumirea entității juridice și număr persoane deservite de SIA
                     </Typography>
 
-                    <TextField 
-                      variant="filled" fullWidth  size="small"
-                      value = {ctx.state.r2}
-                      onChange = {textHandler("r2")}  
+                    <TextField
+                      variant="filled" fullWidth size="small"
+                      value={ctx.state.r2}
+                      onChange={textHandler("r2")}
                     />
                   </Grid>
                   <Grid item sm={12}>
                     <Typography variant="subtitle2" fontWeight={800}>
                       3. CNP/CUI
                     </Typography>
-                    <TextField 
+                    <TextField
                       variant="filled" fullWidth sx={{ px: 0 }} size="small"
-                      value = {ctx.state.r3}
-                      onChange = {textHandler("r3")}  
-                      label = {<small>în cazul persoanelor fizice se va completa CNP-ul, iar îb cazul persoanelor juridice se va completa CUI-ul entității juridice</small>}
+                      value={ctx.state.r3}
+                      onChange={textHandler("r3")}
+                      label={<small>în cazul persoanelor fizice se va completa CNP-ul, iar îb cazul persoanelor juridice se va completa CUI-ul entității juridice</small>}
                     />
                   </Grid>
 
@@ -243,11 +256,11 @@ export default function Index() {
                       4. Adresa completă
                     </Typography>
 
-                    <TextField 
-                      variant="filled" fullWidth  size="small"
-                      value = {ctx.state.r4}
-                      onChange = {textHandler("r4")}  
-                      label = {<small>
+                    <TextField
+                      variant="filled" fullWidth size="small"
+                      value={ctx.state.r4}
+                      onChange={textHandler("r4")}
+                      label={<small>
                         Strada, numărul, detaliile imobilului (bloc, etaj, apartament), oraș, județ
                       </small>}
                     />
@@ -257,11 +270,11 @@ export default function Index() {
                     <Typography variant="subtitle2" fontWeight={800}>
                       5. Telefon
                     </Typography>
-                    
-                    <TextField 
-                      variant="filled" fullWidth  size="small"
-                      value = {ctx.state.r5}
-                      onChange = {textHandler("r5")}  
+
+                    <TextField
+                      variant="filled" fullWidth size="small"
+                      value={ctx.state.r5}
+                      onChange={textHandler("r5")}
                     />
                   </Grid>
 
@@ -269,50 +282,50 @@ export default function Index() {
                     <Typography variant="subtitle2" fontWeight={800}>
                       6. Adresa de e-mail
                     </Typography>
-                    <TextField 
-                      variant="filled" fullWidth  size="small"
-                      value = {ctx.state.r6}
-                      onChange = {textHandler("r6")}  
+                    <TextField
+                      variant="filled" fullWidth size="small"
+                      value={ctx.state.r6}
+                      onChange={textHandler("r6")}
                     />
                   </Grid>
 
                   <Grid item sm={12}>
                     <Typography variant="subtitle2" fontWeight={800}>
-                      
+
                       7. Activitatea principală conform CAEN
                     </Typography>
                     <Typography variant="caption" color="error">
                       IMPORTANT! Acest câmp se completează numai în cazul PERSOANELOR JURIDICE
                     </Typography>
-                    <TextField 
-                      variant="filled" fullWidth  size="small"
-                      value = {ctx.state.r7}
-                      onChange = {textHandler("r7")}  
-                      disabled = {Boolean(+ctx.state.r1) ? true : false}
+                    <TextField
+                      variant="filled" fullWidth size="small"
+                      value={ctx.state.r7}
+                      onChange={textHandler("r7")}
+                      disabled={Boolean(+ctx.state.r1) ? true : false}
                     />
                   </Grid>
 
                   <Grid item sm={12}>
                     <Typography variant="subtitle2" fontWeight={800}>
-                      
+
                       8. Descrierea activității societății
                     </Typography>
                     <Typography variant="caption" color="error">
                       IMPORTANT! Acest câmp se completează numai în cazul PERSOANELOR JURIDICE
                     </Typography>
                     <br />
-                    <TextField 
-                      variant="filled" fullWidth  size="small"
-                      value = {ctx.state.r8}
-                      onChange = {textHandler("r8")}  
-                      disabled = {Boolean(+ctx.state.r1) ? true : false}
-                     
+                    <TextField
+                      variant="filled" fullWidth size="small"
+                      value={ctx.state.r8}
+                      onChange={textHandler("r8")}
+                      disabled={Boolean(+ctx.state.r1) ? true : false}
+
                     />
                   </Grid>
                 </Grid>
 
                 <Grid item sm={12}>
-                  <br/>
+                  <br />
                   <Typography variant="subtitle2" fontWeight={800}>
                     9. Dețineți autorizație de mediu?
                   </Typography>
@@ -320,19 +333,19 @@ export default function Index() {
                     IMPORTANT! Acest câmp se completează numai în cazul PERSOANELOR JURIDICE
                   </Typography>
                   <RadioGroup
-                      row
-                      value = {ctx.state.r9}
-                      onChange = {radioHandler("r9")}
-                    >
+                    row
+                    value={ctx.state.r9}
+                    onChange={radioHandler("r9")}
+                  >
                     <FormControlLabel
                       label="DA"
-                      control={<Radio value = {1} disabled = {Boolean(+ctx.state.r1) ? true : false}  />}
+                      control={<Radio value={1} disabled={Boolean(+ctx.state.r1) ? true : false} />}
                     />
                     <FormControlLabel
                       label="NU"
-                      control={<Radio  value= {0} disabled = {Boolean(+ctx.state.r1) ? true : false}/>}
+                      control={<Radio value={0} disabled={Boolean(+ctx.state.r1) ? true : false} />}
                     />
-                    </RadioGroup>
+                  </RadioGroup>
                 </Grid>
 
 
@@ -345,14 +358,14 @@ export default function Index() {
                     IMPORTANT! Acest câmp se completează numai în cazul PERSOANELOR JURIDICE
                   </Typography>
                   <br />
-                  <TextField 
-                    variant="filled" 
-                    value = {ctx.state.r10}
-                    onChange = {textHandler("r10")}
-                    fullWidth  
+                  <TextField
+                    variant="filled"
+                    value={ctx.state.r10}
+                    onChange={textHandler("r10")}
+                    fullWidth
                     size="small"
-                    disabled = {Boolean(+ctx.state.r1) ? true : false || Boolean(+ctx.state.r9) ? false : true }
-                    
+                    disabled={Boolean(+ctx.state.r1) ? true : false || Boolean(+ctx.state.r9) ? false : true}
+
                   />
                 </Grid>
 
@@ -366,53 +379,51 @@ export default function Index() {
                   </Typography>
                   <br />
                   <RadioGroup
-                      row
-                      value = {ctx.state.r11}
-                      onChange = {radioHandler("r11")}
-                    >
+                    row
+                    value={+ctx.state.r11}
+                    onChange={radioHandler("r11")}
+                  >
                     <FormControlLabel
                       label="Colectare"
-                      control={<Radio value = {1} disabled = {Boolean(+ctx.state.r1) ? true : false}  />}
+                      control={<Radio value={1} disabled={Boolean(+ctx.state.r1) ? true : false} />}
                     />
                     <FormControlLabel
                       label="Epurare"
-                      control={<Radio  value= {0} disabled = {Boolean(+ctx.state.r1) ? true : false}/>}
+                      control={<Radio value={0} disabled={Boolean(+ctx.state.r1) ? true : false} />}
                     />
-                    </RadioGroup>
-                    {parseInt(ctx.state.r11) === 1  && (
-                    <TextField 
-                    value = {ctx.state.r111}
-                    onChange = {textHandler("r111")}
-                    size="small" label="capacitate" 
-                    disabled = {Boolean(+ctx.state.r1) ? true : false}
+                  </RadioGroup>
+                  {parseInt(ctx.state.r11) === 1 && (
+                    <TextField
+                      value={ctx.state.r111}
+                      onChange={textHandler("r111")}
+                      size="small" label="capacitate"
+                      disabled={Boolean(+ctx.state.r1) ? true : false}
                     />
-                    )}
+                  )}
 
                 </Grid>
 
                 <Grid item sm={12}>
-                  <br/>
+                  <br />
                   <Typography variant="subtitle2" fontWeight={800}>
                     12. Sursa de alimentare cu apă de care beneficiați
                   </Typography>
                   <Typography variant="caption" color="error">
                     Bifați toate opțiunile care se aplică.
                   </Typography>
-                  <RadioGroup
-                      row
-                      value = {ctx.state.r12}
-                      onChange = {radioHandler("r12")}
-                    >
-                    <FormControlLabel
-                      label="Din rețeaua publică"
-                      control={<Radio value = {1} disabled = {Boolean(+ctx.state.r1) ? true : false}  />}
-                    />
-                    <FormControlLabel
-                      label="Din surse individuale"
-                      control={<Radio  value= {0} disabled = {Boolean(+ctx.state.r1) ? true : false}/>}
-                    />
-                    </RadioGroup>
-                 
+                  <br />
+                  <FormControlLabel
+                    onChange={checkboxHandler("r121")}
+                    label="Din rețeaua publică"
+                    control={<Checkbox checked={ctx.state.r121} disabled={Boolean(+ctx.state.r1) ? true : false} />}
+                  />
+                  <FormControlLabel
+                    onChange={checkboxHandler("r122")}
+                    label="Din surse individuale"
+                    control={<Checkbox checked={ctx.state.r122} disabled={Boolean(+ctx.state.r1) ? true : false} />}
+                  />
+
+
                 </Grid>
 
                 <Grid item sm={12}>
@@ -420,10 +431,10 @@ export default function Index() {
                     13. Descrieți sistemul de evacuare a apelor uzate menajere de care beneficiați
                   </Typography>
 
-                  <TextField 
-                    value = {ctx.state.r13}
-                    onChange = {textHandler("r13")}
-                    multiline rows={3} variant="filled" fullWidth  size="small"
+                  <TextField
+                    value={ctx.state.r13}
+                    onChange={textHandler("r13")}
+                    multiline rows={3} variant="filled" fullWidth size="small"
                   />
                 </Grid>
 
@@ -434,10 +445,10 @@ export default function Index() {
                   <Typography variant="caption" color="error">
                     Vă rugăm elaborați un răspuns detaliat.
                   </Typography>
-                  <TextField 
-                    value = {ctx.state.r14}
-                    onChange = {textHandler("r14")}                  
-                    multiline rows={3} variant="filled" fullWidth  size="small"
+                  <TextField
+                    value={ctx.state.r14}
+                    onChange={textHandler("r14")}
+                    multiline rows={3} variant="filled" fullWidth size="small"
                   />
                 </Grid>
 
@@ -448,29 +459,29 @@ export default function Index() {
                   <Typography variant="caption" color="error">
                     Vă rugăm să ne oferiți rezultatele ultimelor analize efectuate.
                   </Typography>
-                  <TextField 
-                      value = {ctx.state.r15}
-                      onChange = {textHandler("r15")}
-                      multiline rows={3} variant="filled" fullWidth  size="small"
+                  <TextField
+                    value={ctx.state.r15}
+                    onChange={textHandler("r15")}
+                    multiline rows={3} variant="filled" fullWidth size="small"
                   />
                 </Grid>
 
                 <Grid item sm={12}>
-                  <br/>
+                  <br />
                   <Typography variant="subtitle2" fontWeight={800}>
                     16. Numărul și data Contractului încheiat cu Societatea de vidanjare.
                   </Typography>
                   <Typography variant="caption" color="error">
                     IMPORTANT! Acest câmp se completează numai de PERSOANELE JURIDICE.
                   </Typography>
-                  
+
                   <Grid container spacing={2}>
                     <Grid item xs={12} sm={2}>
-                      <TextField 
-                        value = {ctx.state.r161}
-                        onChange = {textHandler("r161")}
+                      <TextField
+                        value={ctx.state.r161}
+                        onChange={textHandler("r161")}
                         variant="filled" fullWidth label="CONTRACT NR." size="small"
-                        disabled = {Boolean(+ctx.state.r1) ? true : false}
+                        disabled={Boolean(+ctx.state.r1) ? true : false}
                       />
                     </Grid>
                     <Grid item xs={12} sm={4}>
@@ -479,56 +490,56 @@ export default function Index() {
                         label="DIN DATA"
                         value={ctx.state.r162}
                         onChange={dtHandler("r162")}
-                        disabled = {Boolean(+ctx.state.r1) ? true : false}
-                        renderInput={(params) => <TextField variant="filled" {...params} size="small"/>}
+                        disabled={Boolean(+ctx.state.r1) ? true : false}
+                        renderInput={(params) => <TextField variant="filled" {...params} size="small" />}
                       />
                     </Grid>
                   </Grid>
                   <br />
                 </Grid>
-                <Grid item sm = {12} style = {{wordBreak: "break-all", padding: "10px", border: "1px solid green", background: "lightgrey"}}>
+                <Grid item sm={12} style={{ wordBreak: "break-all", padding: "10px", border: "1px solid green", background: "lightgrey" }}>
                   <strong>Codificarea formularului (in vederea salvării și transmiterii datelor acestuia)</strong>
                   &nbsp;&nbsp;&nbsp;&nbsp;
-                  <Button 
-                    startIcon = {<FaBan color ="RED"/>}
-                    onClick = {clearHandler}>GOLEȘTE </Button>
+                  <Button
+                    startIcon={<FaBan color="RED" />}
+                    onClick={clearHandler}>GOLEȘTE </Button>
                   &nbsp;&nbsp;
-                  <Button 
-                    startIcon = {<FaCut color ="green"/>}
-                    onClick = {copyHandler(true)}>TAIE </Button>
+                  <Button
+                    startIcon={<FaCut color="green" />}
+                    onClick={copyHandler(true)}>TAIE </Button>
                   &nbsp;&nbsp;
-                  <Button 
+                  <Button
                     size="small"
-                    startIcon = {<FaCopy color ="navy"/>}
-                    onClick = {copyHandler()}>COPIAZĂ </Button>
+                    startIcon={<FaCopy color="navy" />}
+                    onClick={copyHandler()}>COPIAZĂ </Button>
                   &nbsp;&nbsp;
-                  <Button 
-                    startIcon = {<FaPaste color ="brown"/>}
-                    onClick = {pasteHandler}>LIPEȘTE </Button>
+                  <Button
+                    startIcon={<FaPaste color="brown" />}
+                    onClick={pasteHandler}>LIPEȘTE </Button>
                   {' '}
 
-                  <br/>
+                  <br />
                   <Grid container>
-                    <Grid item sm = {true}>
-                    <TextareaAutosize 
-                        style={{width: "100%", height: "12.2vh"}}  
-                        value= {ctx.b64}
-                        ref = {copyRef}
-                        
-                        onChange = {ev => setCtx({b64: ev.target.value})}
-                    >
-                    
-                    
-                
-                
-                </TextareaAutosize>
+                    <Grid item sm={true}>
+                      <TextareaAutosize
+                        style={{ width: "100%", height: "12.2vh" }}
+                        value={ctx.b64}
+                        ref={copyRef}
+
+                        onChange={ev => setCtx({ b64: ev.target.value })}
+                      >
+
+
+
+
+                      </TextareaAutosize>
                     </Grid>
                     <Grid item>
-                      <Button 
+                      <Button
                         variant="contained" collor="error"
-                        onClick = {decodeHandler}  
-                        >
-                          DECODEAZĂ <br/>IN <br/>FORMULAR
+                        onClick={decodeHandler}
+                      >
+                        DECODEAZĂ <br />IN <br />FORMULAR
                       </Button>
                     </Grid>
                   </Grid>
@@ -548,27 +559,39 @@ export default function Index() {
 
 
 
-          
-        </Box>
-       
-        <Box sx = {{textAlign:"center"}}>
-          <Button disabled>RESETEAZA</Button>
-          <Button color="error" onClick = {printHandler}>TIPARESTE</Button>
-          <Button onClick = {pdfHandler("cerere")}>SALVEZA PDF</Button>
-        </Box>
-<hr/>
-<br/><br/>
-      </Container>
-        <Container maxWidth="sm">
-        <div ref = {printRef} >
-          <PrintTpl siruta = {SIRUTA}/>
-         </div>
-        </Container>
 
-         {notification && <Notification {...{...notification}}  duration={3000} />}
-         {infoModal && <InstructionsModal open = {infoModal} onClose = {()=>setInfoModal(null)} />}
+        </Box>
+
+        <Box sx={{ textAlign: "center" }}>
+
+
+        </Box>
+        <hr />
+        <br /><br />
+      </Container>
+
+
+      {notification && <Notification {...{ ...notification }} duration={3000} />}
+      {infoModal && <InstructionsModal open={infoModal} onClose={() => setInfoModal(null)} />}
+      {printModal && <PrintPreviewModal open={printModal} onClose={() => setPrintModal(null)} />}
     </Fragment>
 
   );
 }
 
+
+
+export const getServerSideProps = async (ctx) => {
+
+
+  const { query } = ctx || {}
+  
+
+    console.log("xxx:",  query)
+    return {
+      props: {
+        b64: query.param ? query.param[0]: null
+      }
+    }
+
+}

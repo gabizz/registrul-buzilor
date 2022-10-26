@@ -40,7 +40,6 @@ Noi, ca partner de soluții informatice al mai multor primării din vestul țăr
 - Primăriile pot opta să centralizeze aceste cereri și să pătreze o evidență clară într-un **REGISTRU ONLINE**. Acest serviciu presupune însă costuri, așadar accesul la acest registru va fi posibil exclusiv pe bază unui abonament lunar (50 lei/lună sau, cu reducere, 500 lei/an)
 
 ## INSTRUCȚIUNI DE FOLOSIRE 
-
 - **pentru persoane**
     - completați formularul cu toate datele necesare
     - listați cererea (sau salvați-o ca PDF)
@@ -48,10 +47,10 @@ Noi, ca partner de soluții informatice al mai multor primării din vestul țăr
     - transmiteți cererea semnată (și/sau ștampilată), împreună cu formularul codificat, pe email primăriei Dvs 
 
         **Notă**:
-		markdown
-    _Este posibil ca primăria Dvs. să vă solicite prezentarea cu exemplarul semnat în original._
-        _În acest caz, va trebui să vă prezentați la sediul primăriei, noi nu avem nici o posibilitate de a le "influența" decizia,_
-        _până la urmă, dânși decid cum înțeleg să aplice legea_
+		\
+    _Este posibil ca primăria Dvs. să vă solicite prezentarea exemplarului semnat, în original._
+        _În acest caz, va trebui să vă prezentați la sediul primăriei, noi nu avem nici o posibilitate de a le "influența" acest proces,_
+        _până la urmă, dânși decid cât de riguros înțeleg să interpreteze legea.(dacă acceptă o copie a formularului semnată olograf, transmisă electronic sau nu)_\
 
 
 - **pentru primării**
