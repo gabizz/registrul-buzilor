@@ -193,17 +193,7 @@ export default function Index({b64}) {
               />
             </Grid>
             <Grid item sm={12}><Divider /></Grid>
-            {/* <Hidden smDown>
-              <Grid item sm={12}>
-                <Typography variant="subtitle1" align="center" fontWeight={900} fontSize="0.9rem">
-                  DECLARAȚIE DE ÎNREGISTRARE <br />
-                  în Registrul de evidență a sistemelor individuale adecvate pentru colectarea apelor uzate
-                  <br /> din localitatea {' '}
-                  {ctx.state.loc ? SIRUTA.find(el => el.siruta === ctx.state.loc)['denloc'] : "---"},
-                  județul {ctx.state.jud ? SIRUTA.find(el => el.siruta === ctx.state.jud)['denloc'] : "---"}
-                </Typography>
-              </Grid>
-            </Hidden> */}
+
             <Grid item sm={12}>
               <Box sx={{ background: "none", p: 0.5, height: "68vh", overflow: "auto" }}>
 
