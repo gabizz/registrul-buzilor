@@ -6,6 +6,7 @@ import { makeStyles } from '@mui/styles'
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { useReactToPrint } from 'react-to-print';
+import { maxWidth, width } from '@mui/system'
 // import PdfTpl from './PdfTpl'
 
 const useStyles = makeStyles( theme => ({
@@ -30,19 +31,37 @@ export default function PrintPreviewModal({open, onClose}) {
     const printHandler = useReactToPrint({content: () => printRef.current})
 
     const pdfHandler =  (filename) => async () => {
+       
         const element = printRef.current;
-        const padding = 10
-        const pdf = new jsPDF({orientation: 'p', unit:'mm'
-        // , size: [297, 210]
-    })
+
+        
         const  canvas = await html2canvas(element)
+
         const imgData = canvas.toDataURL("image/png");
-        const imgProps= pdf.getImageProperties(imgData);
-        const pdfWidth = pdf.internal.pageSize.getWidth()-padding;
-        const pdfHeight = (imgProps.height * pdfWidth) / (imgProps.width);
-    
-        pdf.addImage(imgData, 'PNG', padding, padding, pdfWidth-padding, pdfHeight-padding, undefined, "FAST");
-        pdf.save(filename+'.pdf');    
+        var position = 0;
+        var padding = 10;
+        var imgWidth = 210; 
+        var pageHeight = 295;  
+        var imgHeight = canvas.height * imgWidth / canvas.width-padding;
+        var heightLeft = imgHeight-padding;
+  
+        var doc = new jsPDF('p', 'mm');
+        
+  
+        doc.addImage(imgData, 'PNG', padding, padding, imgWidth, imgHeight, undefined, "FAST");
+        heightLeft -= pageHeight+padding;
+  
+        while (heightLeft >= 0) {
+          position = heightLeft - imgHeight;
+          doc.addPage();
+          doc.addImage(imgData, 'PNG', padding, position-padding, imgWidth, imgHeight, undefined, "FAST");
+          heightLeft -= pageHeight;
+        }
+
+        doc.save(filename+'.pdf');   
+
+      
+ 
       };
 
   return (
@@ -53,7 +72,7 @@ export default function PrintPreviewModal({open, onClose}) {
                     PREVIZUALIZARE TIPĂRIRE
                 </Grid>
                 <Grid item>
-                    <Button disabled variant="contained" color="error" startIcon = {<MdPictureAsPdf/>} onClick={pdfHandler("formular")}>
+                    <Button  variant="contained" color="error" startIcon = {<MdPictureAsPdf/>} onClick={pdfHandler("formular")}>
                         EXPORT PDF
                     </Button>
                 </Grid>

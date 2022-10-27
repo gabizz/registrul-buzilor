@@ -1,16 +1,15 @@
 import React, { forwardRef, Fragment } from 'react'
 import { useAppContext } from '../appContext'
 import styled from 'styled-components';
-import { FormControlLabel, Typography, Checkbox, TextField, Grid } from '@mui/material';
+import { FormControlLabel, Typography,  TextField, Grid } from '@mui/material';
 import moment from 'moment';
 import SIRUTA from '../siruta';
-import QRCode from "qrcode.react";
-import dynamic from 'next/dynamic';
+
 import  GenerateQr  from '../GenerateQr';
 
 // const GenerateQr = dynamic( () => import("../GenerateQr"), {ssr: false})
 
-const PrintTpl = forwardRef(({ siruta }, ref) => {
+const PrintTpl = forwardRef(({ siruta, ...rest }, ref) => {
 
   const [ctx] = useAppContext()
 
@@ -29,7 +28,7 @@ const PrintTpl = forwardRef(({ siruta }, ref) => {
 
 
 
-      <div style={{ width: "100%", height: "100%" }} className="printable">
+      <div className="printable" ref = {ref} {...rest}>
 
         <div align="right">Nr............... din...........................</div>
         <div align="center">
@@ -216,7 +215,7 @@ const PrintTpl = forwardRef(({ siruta }, ref) => {
         </Grid>
         <br />
         <br />
-        <div style={{ width: "100%", wordWrap: "break-word", textAlign: "justify", textJustify: "inter-word" }}>
+        <div style={{ width: "100%", wordWrap: "break-word", textAlign: "justify", textJustify: "inter-word", padding:"10px" }}>
           Prin completarea și transmiterea acestui formular sunteți de acord cu prelucrarea datelor cu caracter personal în scopul
           înscrierii în REGISTRUL DE EVIDENȚĂ A SISTEMELOR INDIVIDUALE ADECVATE PENTRU COLECTAREA APELOR UZATE al localității {loc}, județul {jud}. Prelucrarea datelor cu caracter personal se va realiza cu respectarea prevederilor Regulamentului nr. 679/20166 adoptat de Parlamentul European și Consiliul Uniunii Europene pentru aprobarea normelor privind protecția în ceea ce privește prelucrarea datelor cu caracter personal, precum și a normelor referitoare la libera circulație a acestui tip de date cu caracter personal.
         </div>
