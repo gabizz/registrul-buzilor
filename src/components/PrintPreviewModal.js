@@ -6,7 +6,7 @@ import { makeStyles } from '@mui/styles'
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { useReactToPrint } from 'react-to-print';
-import PdfTpl from './PdfTpl'
+// import PdfTpl from './PdfTpl'
 
 const useStyles = makeStyles( theme => ({
     dialogPaper: {
@@ -67,8 +67,8 @@ export default function PrintPreviewModal({open, onClose}) {
             </Grid>
         </DialogTitle>
         <DialogContent className={classes.dialogContent}>
-            <PdfTpl />
-            <div ref = {printRef} className = {classes.hidden}>
+            {/* <PdfTpl /> */}
+            <div ref = {printRef} >
                 <PrintTpl/>
             </div>
         </DialogContent>

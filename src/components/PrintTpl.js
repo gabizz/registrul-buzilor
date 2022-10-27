@@ -6,9 +6,9 @@ import moment from 'moment';
 import SIRUTA from '../siruta';
 import QRCode from "qrcode.react";
 import dynamic from 'next/dynamic';
-// import  GenerateQr  from '../GenerateQr';
+import  GenerateQr  from '../GenerateQr';
 
-const GenerateQr = dynamic( () => import("../GenerateQr"), {ssr: false})
+// const GenerateQr = dynamic( () => import("../GenerateQr"), {ssr: false})
 
 const PrintTpl = forwardRef(({ siruta }, ref) => {
 
