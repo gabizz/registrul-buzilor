@@ -4,9 +4,11 @@ import styled from 'styled-components';
 import { FormControlLabel, Typography, Checkbox, TextField, Grid } from '@mui/material';
 import moment from 'moment';
 import SIRUTA from '../siruta';
-import QRCode from "react-qr-code";
+import QRCode from "qrcode.react";
+import dynamic from 'next/dynamic';
+// import  GenerateQr  from '../GenerateQr';
 
-
+const GenerateQr = dynamic( () => import("../GenerateQr"), {ssr: false})
 
 const PrintTpl = forwardRef(({ siruta }, ref) => {
 
@@ -18,7 +20,7 @@ const PrintTpl = forwardRef(({ siruta }, ref) => {
   }
 
   const jud = () => {
-    let res = siruta && siruta.find(el => el.parent === ctx.state.jud)
+    let res = SIRUTA.find(el => el.parent === ctx.state.jud)
     return res ? res['denloc'] : "____________________"
   }
 
@@ -133,7 +135,7 @@ const PrintTpl = forwardRef(({ siruta }, ref) => {
           <small><i>IMPORTANT! Acest câmp se completează numai în cazul PERSOANELOR JURIDICE</i></small>
           <br />
           <div style={{ paddingLeft: "40px" }}>
-            <i>{ctx.state.r10 || "..................................................................................................."} </i>
+            <i>{ctx.state.r10 || "...........................................`........................................................"} </i>
           </div>
         </div>
         <div>
@@ -226,12 +228,13 @@ const PrintTpl = forwardRef(({ siruta }, ref) => {
               format PDF. Ulterior, prin scanarea codului, formularul se va autocompleta cu datele completate de Dvs. în acest moment.
             </Typography>
             <br/><br/>
-            <QRCode
+            {/* <QRCode
               size={256}
               style={{ height: "auto", maxWidth: "50%", width: "50%" }}
               value={"https://sia.e-urban.ro/"+ctx.b64}
               viewBox={`0 0 256 256`}
-            />
+            /> */}
+            <GenerateQr data = {ctx.b64} />
           </div>
 
         )}
