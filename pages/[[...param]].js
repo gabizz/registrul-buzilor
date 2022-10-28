@@ -7,6 +7,7 @@ import { DatePicker } from '@mui/x-date-pickers'
 import { useAppContext } from '../src/appContext';
 import SIRUTA from "../src/siruta"
 import moment from 'moment';
+import { useRouter } from 'next/router';
 
 
 import PrintTpl from '../src/components/PrintTpl';
@@ -18,6 +19,7 @@ import { FaBan, FaCut, FaCopy, FaPaste, FaInfoCircle } from "react-icons/fa"
 import InstructionsModal from '../src/components/InstructionsModal';
 import PrintPreviewModal from '../src/components/PrintPreviewModal';
 import { MdPrint } from "react-icons/md"
+import DragAndImportPdf from '../src/components/DragAndImportPdf';
 
 const decoder = (string) => {
   let res = null
@@ -43,12 +45,13 @@ export default function Index({b64}) {
 
   const classes = useStyles()
   const [ctx, setCtx] = useAppContext()
-  const [citiesList, setCitiesList] = useState([])
+  const [citiesList, setCitiesList] = useState()
 
   const copyRef = useRef()
   const [notification, setNotification] = useState()
   const [infoModal, setInfoModal] = useState()
   const [printModal, setPrintModal] = useState()
+  const router = useRouter()
 
   const JUDETE = useMemo(() => SIRUTA.filter(el => el.parent === 1), [])
 
@@ -62,7 +65,10 @@ export default function Index({b64}) {
     if (b64) {
       let decoded = decoder(b64)
       if (decoded) {
-        setCtx({ state: JSON.parse(decoded), b64: b64 })
+        let obj = JSON.parse(decoded)
+
+        setCitiesList( SIRUTA.filter( el => el.siruta == obj.loc))
+        setCtx({ state: obj, b64: b64 })
       }
      
     }
@@ -83,7 +89,7 @@ export default function Index({b64}) {
     const judId = ev.target.value
     const cities = SIRUTA.filter(el => el.parent === judId)
     setCitiesList(cities)
-    setCtx({ state: { ...ctx.state, jud: judId, loc: cities && cities[0]['siruta'] } })
+    setCtx({ state: { ...ctx.state, jud: judId, loc: ctx.state.locId || cities && cities[0]['siruta'] } })
   }
 
   const checkboxHandler = name => ev => setCtx({ state: { ...ctx.state, [name]: ev.target.checked } })
@@ -125,7 +131,11 @@ export default function Index({b64}) {
     setCtx({ b64: paste })
   }
 
-
+const importPdfHandler = ev => {
+  if (ev) {
+      router.push("https://sia.e-urban.ro/"+ev)
+  }
+}
 
   return (
     <Fragment>
@@ -153,7 +163,7 @@ export default function Index({b64}) {
           <FaInfoCircle  size="1.5em" />
           </IconButton>
         </div>
-        <Box sx={{ m: 0, p: 2, border: "2px dashed grey", height: "80vh", overflow: "hidden" }} >
+        <Box sx={{ m: 0, p: 2, border: "2px dashed grey", height: "85vh", overflow: "hidden" }} >
 
           <Grid container spacing={1} >
 
@@ -170,16 +180,19 @@ export default function Index({b64}) {
               </TextField>
             </Grid>
             <Grid item xs={12} sm={3}>
+              {citiesList && (
               <TextField
-                select value={ctx.state.loc} onChange={locChangeHandler} fullWidth size="small"
-                label="LOCALITATEA" placeholder='alegeti  localitatea'
-              >
-                {citiesList.map((e, i) => (
-                  <MenuItem key={i} value={e.siruta}>
-                    {e.denloc}
-                  </MenuItem>
-                ))}
-              </TextField>
+              select value={ctx.state.loc} onChange={locChangeHandler} fullWidth size="small"
+              label="LOCALITATEA" placeholder='alegeti  localitatea'
+            >
+              {citiesList.map((e, i) => (
+                <MenuItem key={i} value={e.siruta}>
+                  {e.denloc}
+                </MenuItem>
+              ))}
+            </TextField>
+              )}
+
             </Grid>
             <Grid item xs={true} />
 
@@ -405,12 +418,12 @@ export default function Index({b64}) {
                   <FormControlLabel
                     onChange={checkboxHandler("r121")}
                     label="Din rețeaua publică"
-                    control={<Checkbox checked={ctx.state.r121} disabled={Boolean(+ctx.state.r1) ? true : false} />}
+                    control={<Checkbox checked={ctx.state.r121} />}
                   />
                   <FormControlLabel
                     onChange={checkboxHandler("r122")}
                     label="Din surse individuale"
-                    control={<Checkbox checked={ctx.state.r122} disabled={Boolean(+ctx.state.r1) ? true : false} />}
+                    control={<Checkbox checked={ctx.state.r122}  />}
                   />
 
 
@@ -487,7 +500,7 @@ export default function Index({b64}) {
                   </Grid>
                   <br />
                 </Grid>
-                <Grid item sm={12} style={{ wordBreak: "break-all", padding: "10px", border: "1px solid green", background: "lightgrey" }}>
+                {/* <Grid item sm={12} style={{ wordBreak: "break-all", padding: "10px", border: "1px solid green", background: "lightgrey" }}>
                   <strong>Codificarea formularului (in vederea salvării și transmiterii datelor acestuia)</strong>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <Button
@@ -532,10 +545,13 @@ export default function Index({b64}) {
                         DECODEAZĂ <br />IN <br />FORMULAR
                       </Button>
                     </Grid>
+
                   </Grid>
 
-                </Grid>
-
+                </Grid> */}
+                    <Grid item sm = {12}>
+                        <DragAndImportPdf onChange = {importPdfHandler}/>
+                    </Grid>
                 {/* <Grid item sm={12} sx={{ p: 1, background: "beige", fontSize: "0.7em", fontWeight: 400 }}>
                   Prin completarea și transmiterea acestui formular sunteți de acord cu prelucrarea datelor cu caracter personal în scopul înscrierii în REGISTRUL DE EVIDENȚĂ A SISTEMELOR INDIVIDUALE ADECVATE PENTRU COLECTAREA APELOR UZATE al Comunei Șagu, județul Arad. Prelucrarea datelor cu caracter personal se va realiza cu respectarea prevederilor Regulamentului nr. 679/2016 adoptat de Parlamentul European și Consiliul Uniunii Europene pentru aprobarea normelor privind protecția în ceea ce privește prelucrarea datelor cu caracter personal, precum și a normelor referitoare la libera circulație a acestui tip de date cu caracter personal.
                 </Grid> */}

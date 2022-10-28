@@ -195,7 +195,7 @@ const PrintTpl = forwardRef(({ siruta, ...rest }, ref) => {
         <div>
           <strong>13. Descrieți sistemul de evacuare a apelor uzate menajere de care beneficiați</strong><br />
           <div style={{ paddingLeft: "40px" }}>
-            <i>{ctx.state.r4 || "..................................................................................................."} </i>
+            <i>{ctx.state.r13 || "..................................................................................................."} </i>
           </div>
         </div>
         <div className='page-break'></div>
@@ -204,7 +204,7 @@ const PrintTpl = forwardRef(({ siruta, ...rest }, ref) => {
           <small><i>Vă rugăm elaborați un răspuns detaliat.</i></small>
           <br />
           <div style={{ paddingLeft: "40px" }}>
-            <i>{ctx.state.r4 || "..................................................................................................."} </i>
+            <i>{ctx.state.r14 || "..................................................................................................."} </i>
           </div>
         </div>
         <div>
@@ -219,13 +219,13 @@ const PrintTpl = forwardRef(({ siruta, ...rest }, ref) => {
         <div>
           
           <strong>16. Numărul și data Contractului încheiat cu Societatea de vidanjare.</strong><br />
-          <small><i>IMPORTANT! Acest câmp se completează numai în cazul PERSOANELOR JURIDICE</i></small>
-          <br />
+          {/* <small><i>IMPORTANT! Acest câmp se completează numai în cazul PERSOANELOR JURIDICE</i></small> */}
+          
           <div style={{ paddingLeft: "40px" }}>
             Contract nr. <i>{(ctx.state.r161 && ctx.state.r162) ? ctx.state.r161 + " / " + moment(ctx.state.r162).format("DD.MM.YYYY") : "nu este cazul "} </i>
           </div>
         </div>
-       
+        <br />
         <Grid container alignItems="flex-start" justifyContent="space-between">
           <Grid item sm={6} align="center">
             Data,<br />
