@@ -231,15 +231,26 @@ const importPdfHandler = ev => {
                     </RadioGroup>
 
                   </Grid>
-                  <Grid item sm={12}>
+                  <Grid item sm={11}>
                     <Typography variant="subtitle2" fontWeight={800}>
                       2. Numele și prenumele dumneavoastră/Denumirea entității juridice și număr persoane deservite de SIA
                     </Typography>
 
                     <TextField
-                      variant="filled" fullWidth size="small"
+                      variant="outlined" fullWidth size="small"
                       value={ctx.state.r2}
                       onChange={textHandler("r2")}
+                    />
+                  </Grid>
+                  <Grid item sm={1}>
+                    <Typography variant="subtitle2" fontWeight={800}>
+                       Persoane
+                    </Typography>
+
+                    <TextField
+                      variant="outlined" fullWidth size="small"
+                      value={ctx.state.r21} type = "number"
+                      onChange={textHandler("r21")}
                     />
                   </Grid>
                   <Grid item sm={12}>
@@ -247,7 +258,7 @@ const importPdfHandler = ev => {
                       3. CNP/CUI
                     </Typography>
                     <TextField
-                      variant="filled" fullWidth sx={{ px: 0 }} size="small"
+                      variant="outlined" fullWidth sx={{ px: 0 }} size="small"
                       value={ctx.state.r3}
                       onChange={textHandler("r3")}
                       label={<small>în cazul persoanelor fizice se va completa CNP-ul, iar îb cazul persoanelor juridice se va completa CUI-ul entității juridice</small>}
@@ -260,7 +271,7 @@ const importPdfHandler = ev => {
                     </Typography>
 
                     <TextField
-                      variant="filled" fullWidth size="small"
+                      variant="outlined" fullWidth size="small"
                       value={ctx.state.r4}
                       onChange={textHandler("r4")}
                       label={<small>
@@ -275,7 +286,7 @@ const importPdfHandler = ev => {
                     </Typography>
 
                     <TextField
-                      variant="filled" fullWidth size="small"
+                      variant="outlined" fullWidth size="small"
                       value={ctx.state.r5}
                       onChange={textHandler("r5")}
                     />
@@ -286,7 +297,7 @@ const importPdfHandler = ev => {
                       6. Adresa de e-mail
                     </Typography>
                     <TextField
-                      variant="filled" fullWidth size="small"
+                      variant="outlined" fullWidth size="small"
                       value={ctx.state.r6}
                       onChange={textHandler("r6")}
                     />
@@ -301,7 +312,7 @@ const importPdfHandler = ev => {
                       IMPORTANT! Acest câmp se completează numai în cazul PERSOANELOR JURIDICE
                     </Typography>
                     <TextField
-                      variant="filled" fullWidth size="small"
+                      variant="outlined" fullWidth size="small"
                       value={ctx.state.r7}
                       onChange={textHandler("r7")}
                       disabled={Boolean(+ctx.state.r1) ? true : false}
@@ -318,7 +329,7 @@ const importPdfHandler = ev => {
                     </Typography>
                     <br />
                     <TextField
-                      variant="filled" fullWidth size="small"
+                      variant="outlined" fullWidth size="small"
                       value={ctx.state.r8}
                       onChange={textHandler("r8")}
                       disabled={Boolean(+ctx.state.r1) ? true : false}
@@ -362,7 +373,7 @@ const importPdfHandler = ev => {
                   </Typography>
                   <br />
                   <TextField
-                    variant="filled"
+                    variant="outlined"
                     value={ctx.state.r10}
                     onChange={textHandler("r10")}
                     fullWidth
@@ -437,7 +448,7 @@ const importPdfHandler = ev => {
                   <TextField
                     value={ctx.state.r13}
                     onChange={textHandler("r13")}
-                    multiline rows={3} variant="filled" fullWidth size="small"
+                    multiline rows={3} variant="outlined" fullWidth size="small"
                   />
                 </Grid>
 
@@ -451,7 +462,7 @@ const importPdfHandler = ev => {
                   <TextField
                     value={ctx.state.r14}
                     onChange={textHandler("r14")}
-                    multiline rows={3} variant="filled" fullWidth size="small"
+                    multiline rows={3} variant="outlined" fullWidth size="small"
                   />
                 </Grid>
 
@@ -465,7 +476,7 @@ const importPdfHandler = ev => {
                   <TextField
                     value={ctx.state.r15}
                     onChange={textHandler("r15")}
-                    multiline rows={3} variant="filled" fullWidth size="small"
+                    multiline rows={3} variant="outlined" fullWidth size="small"
                   />
                 </Grid>
 
@@ -483,7 +494,7 @@ const importPdfHandler = ev => {
                       <TextField
                         value={ctx.state.r161}
                         onChange={textHandler("r161")}
-                        variant="filled" fullWidth label="CONTRACT NR." size="small"
+                        variant="outlined" fullWidth label="CONTRACT NR." size="small"
                         disabled={Boolean(+ctx.state.r1) ? true : false}
                       />
                     </Grid>
@@ -494,7 +505,7 @@ const importPdfHandler = ev => {
                         value={ctx.state.r162}
                         onChange={dtHandler("r162")}
                         disabled={Boolean(+ctx.state.r1) ? true : false}
-                        renderInput={(params) => <TextField variant="filled" {...params} size="small" />}
+                        renderInput={(params) => <TextField variant="outlined" {...params} size="small" />}
                       />
                     </Grid>
                   </Grid>

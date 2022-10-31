@@ -22,6 +22,7 @@ const INITIAL_DATA = {
   loc: 0,
   r1: 1, //tip persoana, juridica=true, fizica-false
   r2: "", //nume
+  r21: 1, //nr persoane
   r3: "", //cnp/cui
   r4: "", //adresa
   r5: "", //telefon

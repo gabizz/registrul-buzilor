@@ -73,7 +73,9 @@ const PrintTpl = forwardRef(({ siruta, ...rest }, ref) => {
               <strong>2. Numele și prenumele dumneavoastră/Denumirea entității juridice și număr persoane deservite de SIA</strong>
               <br />
               <div style={{ paddingLeft: "40px" }}>
-                <i>{ctx.state.r2 || "..................................................................................................."} </i>
+                <i>{ctx.state.r2
+                ? <>{ctx.state.r2} {ctx.state.r21 && <>({ctx.state.r21} persoane)</>} </>
+                : "..................................................................................................."} </i>
               </div>
             </div>
             <div>
