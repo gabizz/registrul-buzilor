@@ -2,7 +2,8 @@ import React, { Fragment, useState, useEffect, useMemo, useRef } from 'react';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Link from "../src/Link"
-import { MenuItem, TextField, Grid, Typography, FormControlLabel, Divider, Button, Radio, RadioGroup, TextareaAutosize, Checkbox, IconButton } from '@mui/material';
+import { MenuItem, Grid, Typography, FormControlLabel, Divider, Button, Radio, RadioGroup, TextareaAutosize, Checkbox, IconButton } from '@mui/material';
+import FancyInput from '../src/components/FancyInput';
 import { DatePicker } from '@mui/x-date-pickers'
 import { useAppContext } from '../src/appContext';
 import SIRUTA from "../src/siruta"
@@ -163,12 +164,12 @@ const importPdfHandler = ev => {
           <FaInfoCircle  size="1.5em" />
           </IconButton>
         </div>
-        <Box sx={{ m: 0, p: 2, border: "2px dashed grey", height: "85vh", overflow: "hidden" }} >
+        <Box sx={{ m: 0, p: 2, border: "none", boxShadow: "2px 2px 10px grey",  background:"AliceBlue",height: "85vh", overflow: "hidden" }} >
 
           <Grid container spacing={1} >
 
             <Grid item xs={12} sm={3}>
-              <TextField
+              <FancyInput
                 select value={ctx.state.jud} onChange={judChangeHandler} fullWidth size="small"
                 label="JUDETUL"
               >
@@ -177,11 +178,11 @@ const importPdfHandler = ev => {
                     {e.denloc}
                   </MenuItem>
                 ))}
-              </TextField>
+              </FancyInput>
             </Grid>
             <Grid item xs={12} sm={3}>
               {citiesList && (
-              <TextField
+              <FancyInput
               select value={ctx.state.loc} onChange={locChangeHandler} fullWidth size="small"
               label="LOCALITATEA" placeholder='alegeti  localitatea'
             >
@@ -190,7 +191,7 @@ const importPdfHandler = ev => {
                   {e.denloc}
                 </MenuItem>
               ))}
-            </TextField>
+            </FancyInput>
               )}
 
             </Grid>
@@ -202,7 +203,7 @@ const importPdfHandler = ev => {
                 label="DATA DEPUNERII"
                 value={ctx.state.dt}
                 onChange={dtHandler("dt")}
-                renderInput={(params) => <TextField size="small" {...params} />}
+                renderInput={(params) => <FancyInput size="small" {...params} style = {{background: "white"}}/>}
               />
             </Grid>
             <Grid item sm={12}><Divider /></Grid>
@@ -236,7 +237,7 @@ const importPdfHandler = ev => {
                       2. Numele și prenumele dumneavoastră/Denumirea entității juridice și număr persoane deservite de SIA
                     </Typography>
 
-                    <TextField
+                    <FancyInput
                       variant="outlined" fullWidth size="small"
                       value={ctx.state.r2}
                       onChange={textHandler("r2")}
@@ -247,7 +248,7 @@ const importPdfHandler = ev => {
                        Persoane
                     </Typography>
 
-                    <TextField
+                    <FancyInput
                       variant="outlined" fullWidth size="small"
                       value={ctx.state.r21} type = "number"
                       onChange={textHandler("r21")}
@@ -257,7 +258,7 @@ const importPdfHandler = ev => {
                     <Typography variant="subtitle2" fontWeight={800}>
                       3. CNP/CUI
                     </Typography>
-                    <TextField
+                    <FancyInput
                       variant="outlined" fullWidth sx={{ px: 0 }} size="small"
                       value={ctx.state.r3}
                       onChange={textHandler("r3")}
@@ -270,7 +271,7 @@ const importPdfHandler = ev => {
                       4. Adresa completă
                     </Typography>
 
-                    <TextField
+                    <FancyInput
                       variant="outlined" fullWidth size="small"
                       value={ctx.state.r4}
                       onChange={textHandler("r4")}
@@ -285,7 +286,7 @@ const importPdfHandler = ev => {
                       5. Telefon
                     </Typography>
 
-                    <TextField
+                    <FancyInput
                       variant="outlined" fullWidth size="small"
                       value={ctx.state.r5}
                       onChange={textHandler("r5")}
@@ -296,7 +297,7 @@ const importPdfHandler = ev => {
                     <Typography variant="subtitle2" fontWeight={800}>
                       6. Adresa de e-mail
                     </Typography>
-                    <TextField
+                    <FancyInput
                       variant="outlined" fullWidth size="small"
                       value={ctx.state.r6}
                       onChange={textHandler("r6")}
@@ -311,7 +312,7 @@ const importPdfHandler = ev => {
                     <Typography variant="caption" color="error">
                       IMPORTANT! Acest câmp se completează numai în cazul PERSOANELOR JURIDICE
                     </Typography>
-                    <TextField
+                    <FancyInput
                       variant="outlined" fullWidth size="small"
                       value={ctx.state.r7}
                       onChange={textHandler("r7")}
@@ -328,7 +329,7 @@ const importPdfHandler = ev => {
                       IMPORTANT! Acest câmp se completează numai în cazul PERSOANELOR JURIDICE
                     </Typography>
                     <br />
-                    <TextField
+                    <FancyInput
                       variant="outlined" fullWidth size="small"
                       value={ctx.state.r8}
                       onChange={textHandler("r8")}
@@ -372,7 +373,7 @@ const importPdfHandler = ev => {
                     IMPORTANT! Acest câmp se completează numai în cazul PERSOANELOR JURIDICE
                   </Typography>
                   <br />
-                  <TextField
+                  <FancyInput
                     variant="outlined"
                     value={ctx.state.r10}
                     onChange={textHandler("r10")}
@@ -407,7 +408,7 @@ const importPdfHandler = ev => {
                     />
                   </RadioGroup>
                   {parseInt(ctx.state.r11) === 1 && (
-                    <TextField
+                    <FancyInput
                       value={ctx.state.r111}
                       onChange={textHandler("r111")}
                       size="small" label="capacitate"
@@ -445,7 +446,7 @@ const importPdfHandler = ev => {
                     13. Descrieți sistemul de evacuare a apelor uzate menajere de care beneficiați
                   </Typography>
 
-                  <TextField
+                  <FancyInput
                     value={ctx.state.r13}
                     onChange={textHandler("r13")}
                     multiline rows={3} variant="outlined" fullWidth size="small"
@@ -459,7 +460,7 @@ const importPdfHandler = ev => {
                   <Typography variant="caption" color="error">
                     Vă rugăm elaborați un răspuns detaliat.
                   </Typography>
-                  <TextField
+                  <FancyInput
                     value={ctx.state.r14}
                     onChange={textHandler("r14")}
                     multiline rows={3} variant="outlined" fullWidth size="small"
@@ -473,7 +474,7 @@ const importPdfHandler = ev => {
                   <Typography variant="caption" color="error">
                     Vă rugăm să ne oferiți rezultatele ultimelor analize efectuate.
                   </Typography>
-                  <TextField
+                  <FancyInput
                     value={ctx.state.r15}
                     onChange={textHandler("r15")}
                     multiline rows={3} variant="outlined" fullWidth size="small"
@@ -491,7 +492,7 @@ const importPdfHandler = ev => {
 
                   <Grid container spacing={2}>
                     <Grid item xs={12} sm={2}>
-                      <TextField
+                      <FancyInput
                         value={ctx.state.r161}
                         onChange={textHandler("r161")}
                         variant="outlined" fullWidth label="CONTRACT NR." size="small"
@@ -505,7 +506,7 @@ const importPdfHandler = ev => {
                         value={ctx.state.r162}
                         onChange={dtHandler("r162")}
                         disabled={Boolean(+ctx.state.r1) ? true : false}
-                        renderInput={(params) => <TextField variant="outlined" {...params} size="small" />}
+                        renderInput={(params) => <FancyInput variant="outlined" {...params} size="small" style ={{background:"white"}}/>}
                       />
                     </Grid>
                   </Grid>
@@ -566,25 +567,10 @@ const importPdfHandler = ev => {
                 {/* <Grid item sm={12} sx={{ p: 1, background: "beige", fontSize: "0.7em", fontWeight: 400 }}>
                   Prin completarea și transmiterea acestui formular sunteți de acord cu prelucrarea datelor cu caracter personal în scopul înscrierii în REGISTRUL DE EVIDENȚĂ A SISTEMELOR INDIVIDUALE ADECVATE PENTRU COLECTAREA APELOR UZATE al Comunei Șagu, județul Arad. Prelucrarea datelor cu caracter personal se va realiza cu respectarea prevederilor Regulamentului nr. 679/2016 adoptat de Parlamentul European și Consiliul Uniunii Europene pentru aprobarea normelor privind protecția în ceea ce privește prelucrarea datelor cu caracter personal, precum și a normelor referitoare la libera circulație a acestui tip de date cu caracter personal.
                 </Grid> */}
-
-
-
               </Box>
             </Grid>
-
           </Grid>
-
-
-
-
         </Box>
-
-        <Box sx={{ textAlign: "center" }}>
-
-
-        </Box>
-        <hr />
-        <br /><br />
       </Container>
 
 

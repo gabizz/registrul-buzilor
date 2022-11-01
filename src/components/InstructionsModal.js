@@ -37,7 +37,7 @@ Noi, ca partner de soluții informatice al mai multor primării din vestul țăr
 
 - Pentru *persoanele fizice* sau *juridice* care aleg să folosească acest mod de declarare rapid și modern, **costurile sunt 0 (zero) lei.**
 - Primăriile partenere (și nu numai) pot folosi, de asemenea, **gratuit** mecanismul nostru de import/export a cererilor prin codificarea formularului în string Base64
-- Primăriile pot opta să centralizeze aceste cereri și să pătreze o evidență clară într-un **REGISTRU ONLINE**. Acest serviciu presupune însă costuri, așadar accesul la acest registru va fi posibil exclusiv pe bază unui abonament lunar (50 lei/lună sau, cu reducere, 500 lei/an)
+- Primăriile pot opta să centralizeze aceste cereri și să pătreze o evidență clară într-un **REGISTRU ONLINE**. Acest serviciu presupune însă costuri, așadar accesul la acest registru va fi posibil exclusiv pe bază unui abonament lunar (100 lei/lună sau, cu reducere, 1000 lei/an)
 
 ## INSTRUCȚIUNI DE FOLOSIRE 
 - **pentru persoane**

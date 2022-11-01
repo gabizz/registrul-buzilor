@@ -1,21 +1,19 @@
-import { Button, Dialog, DialogContent, DialogTitle, Grid } from '@mui/material'
+import { Button, Dialog, DialogContent, DialogTitle, Grid, IconButton } from '@mui/material'
 import React, { useRef, useMemo } from 'react'
 import PrintTpl from './PrintTpl'
-import { MdPictureAsPdf, MdPrint } from "react-icons/md"
+import { MdClose, MdPictureAsPdf, MdPrint } from "react-icons/md"
 import { makeStyles } from '@mui/styles'
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { useReactToPrint } from 'react-to-print';
 import { maxWidth, width } from '@mui/system'
-import { useAppContext } from '../appContext'
 import moment from 'moment'
+import { useAppContext } from '../appContext'
 // import PdfTpl from './PdfTpl'
 
 const useStyles = makeStyles( theme => ({
     dialogPaper: {
         minWidth: "70vw", minHeight: "100vh",
-
-       
     },
     dialogContent: {
         "@media screen": { },
@@ -86,13 +84,14 @@ export default function PrintPreviewModal({open, onClose}) {
                         EXPORT PDF
                     </Button>
                 </Grid>
-                
                 <Grid item>
                     <Button variant="contained" color="primary" startIcon = {<MdPrint/>} onClick = {printHandler}>
                         TIPĂRIRE
                     </Button>
                 </Grid>
-            
+                <Grid item>
+                    <IconButton onClick = {()=>onClose()}><MdClose size="2em" color="grey"/></IconButton>
+                </Grid>
             </Grid>
         </DialogTitle>
         <DialogContent className={classes.dialogContent}>
