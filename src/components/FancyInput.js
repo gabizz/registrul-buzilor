@@ -3,8 +3,8 @@ import {makeStyles} from "@mui/styles"
 import React from 'react'
 
 const useStyles = makeStyles(theme=>({
-    textField: { background: 'white' ,  boxShadow: 0, 
-    "&& :hover": {background: theme.palette.grey[100]},
+    textField: { background: theme.palette.grey[200] ,  boxShadow: 0, 
+    "&& :hover": {background: theme.palette.grey[200]},
 
     
     "&& input" : {
@@ -43,7 +43,7 @@ const useStyles = makeStyles(theme=>({
     inputLabel: { fontSize: '0.9em'}
 }))
 
-export default function FancyInput(props) {
+export default function FancyInput(props, {...rest}) {
     const classes = useStyles()
     return (
         <TextField 
@@ -56,7 +56,7 @@ export default function FancyInput(props) {
             InputLabelProps = {{className: classes.inputLabel}}
             {...{...props, value: props.value || '' }}
             disabled = {props.disabled}
-            {...props} />
+            {...rest} />
     )
 }
 

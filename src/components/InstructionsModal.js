@@ -42,28 +42,38 @@ Noi, ca partner de soluții informatice al mai multor primării din vestul țăr
 ## INSTRUCȚIUNI DE FOLOSIRE 
 - **pentru persoane**
     - completați formularul cu toate datele necesare
-    - listați cererea (sau salvați-o ca PDF)
-    - copiați formularul codificat
-    - transmiteți cererea semnată (și/sau ștampilată), împreună cu formularul codificat, pe email primăriei Dvs 
+        - **DACĂ DEȚINEȚI O SEMNĂTURA ELECTRONICĂ (TOKEN)** : 
+            - descărcați în format PDF formularul (TIPĂRIRE -> alegeți tipul de declarație -> EXPORT PDF)
+            - salvați fișierul PDF în calculator, senmați-l digital și transmiteți pe email către  primăria Dvs.
+            - copiați formularul codificat
+
+        - **ÎN TOAT CELELALTE CAZURI** 
+            - veți semna olograf în fața funcționarului sau veți semna olograf și veți transmite pe email primăriei Dvs 
 
         **Notă**:
-		\
+		
     _Este posibil ca primăria Dvs. să vă solicite prezentarea exemplarului semnat, în original._
         _În acest caz, va trebui să vă prezentați la sediul primăriei, noi nu avem nici o posibilitate de a le "influența" acest proces,_
         _până la urmă, dânși decid cât de riguros înțeleg să interpreteze legea.(dacă acceptă o copie a formularului semnată olograf, transmisă electronic sau nu)_\
 
 
 - **pentru primării**
-    - accesați formularul și plasați prin "paste"(lipire) formularul codificat primit prin email de la declarant în box-ul de sub formular, 
-    denumit "**Codificarea formularului (in vederea salvării și transmiterii datelor acestuia)**"
-    - faceți click pe butonul albastru (**DECODEAZĂ ÎN FORMULAR**)
-    - formularul va fi preluat cu toate rubricile sale. Îl veți putea vizualiza și/sau lista, iar, după caz, dacă sunteți autentificat 
-    în aplicație, după ce il veți verifica și valida, îl veți putea prelua în propriul REGISTRUL SIA
+    - **DACĂ AȚI PRIMIT UN PDF GENERAT DIN FORMULARUL ONLINE ȘI SEMNAT ELECTRONIC**
+        - dechideți aplicația SIA, adăgați o declarație nouă, iar în formularul de completare al declarației, TRAGEȚI pdf-ul primit 
+            în caseta galbenă. Datele se vor prelua automat
+    - **DACA AȚI PRIMIT UN DOCUMENT SCANAT** (listat din sia.e-urban.ro, semnat olograf și listat). 
+        
+        - folosiți orice aplicației de scanare a codurilor QR și scanați codul din partea stângă jos a paginii, după care vizitați link-ul
+        asftel generat
+
+    - **DACĂ PERSOANA A DEPUS FORMULARUL ÎN ALT FORMAT, FIE DIRECT LA PRIMĂRIE, FIE PRIN EMAIL**
+
+         - Intrați în aplicația SIA și completați manual toate câmpurile disponibile în declarația primită.
 
 
 ### ASPECTE LEGALE ###
 
-- APLICAȚIA DE FAȚĂ **NU COLECTEAZĂ ȘI NU STOCHEAZĂ NICI UN FEL DE DATE PERSONALE, ** așadar apreciem că nu intră sub incidența Regulamentului GDPR.
+- APLICAȚIA DE FAȚĂ **_NU COLECTEAZĂ ȘI NU STOCHEAZĂ NICI UN FEL DE DATE PERSONALE_,** așadar apreciem că nu intră sub incidența Regulamentului GDPR.
 
 - Responsabilitatea pentru transmiterea corectă, în termen și pe adresa de email corectă a datelor cererii de înscriere în Registrul SIA este **în totalitate a Dvs.**! 
 

@@ -50,12 +50,12 @@ export default function DragAndImportPdf({onChange}) {
   return (
     <div {...getRootProps()} style={{ 
         border: "none", 
-        background: "ivory", borderRadius: 25, boxShadow: "0 0 5px grey",
-        height: "25 vh", display: "flex", alignItems: "center", justifyContent: "center",
+        background: "ivory", borderRadius: 10, boxShadow: "0 0 5px grey",
+        height: "100%", display: "flex", alignItems: "center", justifyContent: "center",
          }}>
       <input {...getInputProps()} />
-      <p align="center" style = {{fontSize: "2rem", fontWeight:800, color: "lightgrey"}}>
-        Trageți aici un fisier PDF generat cu această aplicație <br/>sau faceți click pentru a-l încărca manual
+      <p align="center" style = {{fontSize: "1rem", fontWeight:800, color: "lightgrey"}}>
+        Trageți aici un fisier PDF generat cu această aplicație sau faceți click pentru a-l încărca manual
       </p>
     </div>
   )

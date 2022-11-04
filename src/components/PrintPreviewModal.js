@@ -96,9 +96,9 @@ export default function PrintPreviewModal({open, onClose}) {
         </DialogTitle>
         <DialogContent className={classes.dialogContent}>
             {/* <PdfTpl /> */}
-            <div ref = {printRef} >
-                <PrintTpl/>
-            </div>
+            
+                <PrintTpl ref = {printRef} />
+            
         </DialogContent>
     </Dialog>
   )
