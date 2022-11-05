@@ -11,7 +11,7 @@ export const DATE_GENERALE =  [
         {type: "divider", sm: 12, label: <Divider/>},
         {key: "jud", defaultValue: 0, label: "JUDEȚUL", type: "jud",  sm:3 },
         {key: "loc", defaultValue: 0, label: "LOCALITATEA", type: "loc",  sm: 3 },
-        {type: "divider", sm: 2, label: <div align="center">Tip persoană</div>, value: true, printSm: 1.3},
+        {type: "divider", sm: true, label: <div align="center">Tip persoană</div>, value: true, printSm: 1.3},
         {
             key: "r1", defaultValue: 0, label: "", type: "radio", 
             options: [{value: 0, label:<small>juridică</small>}, {value:1, label: <small>fizică</small>}], 
@@ -105,7 +105,7 @@ export const DATE_GENERALE =  [
                 sm: true, printSm: 10
             },
             {
-                key: "c7", type: "radio", options: [{value:"1", label:"DA"}, {value: "b", label: "NU"}],
+                key: "c7", type: "radio", options: [{value:"1", label:"DA"}, {value: "0", label: "NU"}],
                 label: "", 
                 sm:2,
             },
