@@ -76,7 +76,7 @@ const PrintTpl = forwardRef(({ siruta, ...rest }, ref) => {
     let b64res = "";
     if ( ctx.print === "colectare") {
       b64res = Object.keys(ctx.state).reduce( (acc,key) => {
-        if ( ["jud", "loc", "nr", "dt", "gdpr"].indexOf(key) > -1) { acc = {...acc, [key]: ctx.state[key]} }
+        if ( ["jud", "loc", "nr", "dt", "gdpr", "tip"].indexOf(key) > -1) { acc = {...acc, [key]: ctx.state[key]} }
         if ( ["r", "c"].indexOf(key.charAt(0)) > -1 )  { acc = {...acc, [key]: ctx.state[key]} }
         return acc
       }, {})
@@ -84,7 +84,7 @@ const PrintTpl = forwardRef(({ siruta, ...rest }, ref) => {
     }
     if ( ctx.print === "epurare") {
       b64res = Object.keys(ctx.state).reduce( (acc,key) => {
-        if ( ["jud", "loc", "nr", "dt", "gdpr"].indexOf(key) > -1) { acc = {...acc, [key]: ctx.state[key]} }
+        if ( ["jud", "loc", "nr", "dt", "gdpr", "tip"].indexOf(key) > -1) { acc = {...acc, [key]: ctx.state[key]} }
         if ( ["r", "e"].indexOf(key.charAt(0)) > -1 )  { acc = {...acc, [key]: ctx.state[key]} }
         return acc
       }, {})

@@ -1,4 +1,4 @@
-import { Button, Card, IconButton, Typography, Divider, Menu, MenuItem } from '@mui/material';
+import { Button, Card, IconButton, Typography, Divider, Menu, MenuItem, Grid, Radio, RadioGroup, FormControlLabel } from '@mui/material';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import { useRouter } from 'next/router';
@@ -95,31 +95,64 @@ export default function Index({ b64 }) {
       </Container>
 
       <Container maxWidth="lg">
-        <div style={{ width: "100%", textAlign: "right", display: "flex", alignItems: "center", justifyContent: "flex-end", marginBottom: "5px" }} >
+        <Grid container alignItems="center" justifyContent="space-between">
+           <Grid item sm = {2} align="center">
+            <small>TIP DECLARAȚIE</small>
+        </Grid>
+        <Grid item sm ={3} align="left">
+          <RadioGroup row
+            value={ctx.state.tip}
+            onChange = {ev => setCtx({state: {...ctx.state, tip: +ev.target.value}})}
+          >
+              <FormControlLabel 
+                label = {<strong>COLECTARE</strong>}
+                control={<Radio value = {1}></Radio>
+              }
+              />
+              <FormControlLabel 
+                label = {<strong>EPURARE</strong>}
+                control={<Radio value = {0}></Radio>
+              }
+              />
+          </RadioGroup>
+        </Grid>
+        <Grid item sm = {4}></Grid>
+        <Grid item sm = {2}>
           <Button
-              color="error" size="small" variant="outlined" 
+              color="error" size="small" variant="outlined" fullWidth
               onClick={ev=>setCtx({anchorEl: ev.currentTarget})} style={{ marginRight: "5px" }}
               disabled = {!ctx.state.gdpr || (ctx.state.gdpr && ctx.state.gdpr === "0")}
               startIcon={<MdPrint />}
           >TIPĂRIRE</Button>
+          </Grid>
+          <Grid item sm = {true}>
           <Menu anchorEl= {ctx.anchorEl} open = {Boolean(ctx.anchorEl)} onClose = {()=>setCtx({anchorEl: null})}>
               <MenuItem onClick = {()=>setCtx({print:"colectare", anchorEl:null})}>DECLARATIE COLECTARE</MenuItem>
               <MenuItem onClick = {()=>setCtx({print:"epurare", anchorEl: null})}>DECLARATIE EPURARE</MenuItem>
           </Menu>
+          </Grid>
+          <Grid item sm = {true}>
           <IconButton size="small" color="info" onClick={() => setCtx({ info: true })}>
             <FaInfoCircle size="1.5em" />
           </IconButton>
-        </div>
+          </Grid>
+          <Grid item sm = {12}>
+            <Divider/>
+            <br/>
+          </Grid>
+        </Grid>
 
       </Container>
 
       <Container maxWidth="lg">
         <MyTabs value={ctx.tabIndex} onChange={(ev, newVal) => setCtx({ tabIndex: newVal })} >
           <MyTab key={0} value={0} label="DATE GENERALE" />
-          <MyTab key={1} value={1} label="DECLARAȚIE COLECTARE" />
-          <MyTab key={2} value={2} label="DECLARAȚIE EPURARE" />
+          {ctx.state.tip === 1 && (<MyTab key={1} value={1} label="DECLARAȚIE COLECTARE" />)}
+          {ctx.state.tip === 0 && (<MyTab key={2} value={2} label="DECLARAȚIE EPURARE" />)}
+          
+          
         </MyTabs>
-
+    {console.log("ctx:", ctx.state)}
         <Card className={classes.card}>
           {ctx.tabIndex === 0 && <DateGenerale />}
           {ctx.tabIndex === 1 && <DeclaratieColectare />}

@@ -26,7 +26,7 @@ export default function MyApp(props) {
   return (
     <LocalizationProvider dateAdapter={AdapterMoment} utils={MomentUtils} adapterLocale={"ro"}>
     <AppContextWrapper value = {{
-      state: {jud:0, loc:0, e7:0}, 
+      state: {jud:0, loc:0, e7:0, tip: 1}, 
       b64: null,
       print: null,
       tabIndex: 0, 

@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { DATE_GENERALE, GDPR } from './Props'
 import Inputs from './Inputs'
-import { Alert, Grid } from '@mui/material'
+import { Alert, FormControlLabel, Grid, Radio, RadioGroup } from '@mui/material'
 import { useAppContext } from '../../appContext'
 import { Box } from '@mui/system'
 
@@ -19,7 +19,8 @@ export default function DateGenerale() {
   return (
     <Fragment>
 
-      <Grid container spacing={1} alignItems="center">
+      <Grid container spacing={1} alignItems="center" justifyContent="flex-start">
+       
         {DATE_GENERALE.map((e, i) => (
           <Fragment key={i}>
             <Grid item sm={e.sm ?? true} xs={12}>
