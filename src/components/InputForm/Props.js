@@ -544,7 +544,7 @@ export const DATE_GENERALE =  [
         {type: "divider", value: true, label: <div style = {{lineHeight:1, fontSize: "0.8em", fontWeight:400}}>
             Prin completarea și transmiterea acestui formular sunteți de acord cu prelucrarea datelor cu caracter personal în scopul 
             înscrierii în REGISTRUL DE EVIDENȚĂ A SISTEMELOR INDIVIDUALE ADECVATE PENTRU COLECTAREA APELOR UZATE al 
-            localității {loc ??"....................."} , județul {jud ?? "..........................."}
+            localității {getSiruta(loc) ??"....................."} , județul {getSiruta(jud) ?? "..........................."}
             <br/>Prelucrarea datelor cu caracter personal se va realiza cu respectarea prevederilor Regulamentului nr. 679/20166 
             adoptat de Parlamentul European și Consiliul Uniunii Europene pentru aprobarea normelor privind protecția în ceea ce 
             privește prelucrarea datelor cu caracter personal, precum și a normelor referitoare la libera circulație a acestui tip 

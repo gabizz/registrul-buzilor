@@ -1,4 +1,4 @@
-import React, { forwardRef, Fragment } from 'react'
+import React, { forwardRef, Fragment, useEffect, useState } from 'react'
 import { useAppContext } from '../appContext'
 import styled from 'styled-components';
 import { Typography, Grid } from '@mui/material';
@@ -7,6 +7,7 @@ import { makeStyles } from '@mui/styles';
 import PrintInputs from './InputForm/PrintInputs';
 import { DATE_GENERALE, DECLARATIE_COLECTARE, DECLARATIE_EPURARE, GDPR } from './InputForm/Props';
 import GenerateQr from '../GenerateQr';
+import { b64_encode } from '../b64';
 
 const useStyles = makeStyles(theme => ({
   justify: {
@@ -63,13 +64,38 @@ const PrintTpl = forwardRef(({ siruta, ...rest }, ref) => {
     let res = SIRUTA.find(el => el.siruta === ctx.state.loc)
     return typeof res !== "undefined" ? res['denloc'] : "____________________"
   }
+  const [qrData, setQrData] = useState()
 
   const jud = () => {
     let res = SIRUTA.find(el => el.siruta === ctx.state.jud)
     return res ? res['denloc'] : "____________________"
   }
 
-
+  useEffect(() => {
+    console.log("Ctx PRINT:", ctx.print)
+    let b64res = "";
+    if ( ctx.print === "colectare") {
+      b64res = Object.keys(ctx.state).reduce( (acc,key) => {
+        if ( ["jud", "loc", "nr", "dt", "gdpr"].indexOf(key) > -1) { acc = {...acc, [key]: ctx.state[key]} }
+        if ( ["r", "c"].indexOf(key.charAt(0)) > -1 )  { acc = {...acc, [key]: ctx.state[key]} }
+        return acc
+      }, {})
+      
+    }
+    if ( ctx.print === "epurare") {
+      b64res = Object.keys(ctx.state).reduce( (acc,key) => {
+        if ( ["jud", "loc", "nr", "dt", "gdpr"].indexOf(key) > -1) { acc = {...acc, [key]: ctx.state[key]} }
+        if ( ["r", "e"].indexOf(key.charAt(0)) > -1 )  { acc = {...acc, [key]: ctx.state[key]} }
+        return acc
+      }, {})
+      
+    }
+     
+      
+    
+    console.log("b64res: ", b64res )
+    setQrData(b64_encode(JSON.stringify( b64res )))
+  }, [ctx.print])
 
   return (
     <Styles>
@@ -90,7 +116,7 @@ const PrintTpl = forwardRef(({ siruta, ...rest }, ref) => {
 
         <Grid container>
           <Grid item style={{ border: "0.01em solid black", paddingLeft: "0.1em" }} sm={3} >
-            <GenerateQr data={ctx.b64} />
+            <GenerateQr data={qrData} />
           </Grid>
           <Grid item
             style={{

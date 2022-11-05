@@ -75,7 +75,7 @@ export default function Index({ b64 }) {
       }
 
     }
-  }, [ctx.b64])
+  }, [b64])
 
 
  
