@@ -1,8 +1,9 @@
 import React, { Fragment } from 'react'
 import { DATE_GENERALE, GDPR } from './Props'
 import Inputs from './Inputs'
-import { Grid } from '@mui/material'
+import { Alert, Grid } from '@mui/material'
 import { useAppContext } from '../../appContext'
+import { Box } from '@mui/system'
 
 export default function DateGenerale() {
 
@@ -36,7 +37,8 @@ export default function DateGenerale() {
       </Grid>
 
       <Grid container spacing={1} alignItems="center">
-        {ctx.state && ctx.state.jud && ctx.state.loc && GDPR(ctx.state.jud, ctx.state.loc).map( (e,i)=> (
+        {Boolean(ctx.state && ctx.state.jud && ctx.state.loc) 
+          ? GDPR(ctx.state.jud, ctx.state.loc).map( (e,i)=> (
             <Fragment key={i}>
               <Grid item sm={e.sm || true} xs={12}>
                 <Inputs
@@ -50,7 +52,15 @@ export default function DateGenerale() {
               </Grid>
               
             </Fragment>
-        ))}
+        )
+      
+        )
+        : <Box sx = {{p:2}}>
+          <Alert severity="error">
+          Pentru a putea tipări formularul, este oblgatoriu să alegeți județul și localitatea pentru care se face declarația 
+          și să vă exprimați acordul pentru procesarea datelor cu caracter personal.
+        </Alert>
+        </Box>}
 
       </Grid>
     </Fragment>
