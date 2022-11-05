@@ -70,7 +70,7 @@ export default function Index({ b64 }) {
       if (decoded) {
         let obj = JSON.parse(decoded)
 
-        setCitiesList(SIRUTA.filter(el => el.siruta == obj.loc))
+        // setCitiesList(SIRUTA.filter(el => el.siruta == obj.loc))
         setCtx({ state: obj, b64: b64 })
       }
 
