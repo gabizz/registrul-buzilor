@@ -25,7 +25,7 @@ const RenderForm = ({ data }) => {
           <Fragment key={i}>
               {!(e.type === "divider" && !e.value)
                 ? (
-                  <Grid item sm={e.printSm ?? e.sm} style={{ border: "0.01em solid black", paddingLeft: "0.5em" }} >
+                  <Grid item sm={e.printSm || e.sm} style={{ border: "0.01em solid black", paddingLeft: "0.5em" }} >
 
                   <PrintInputs
                     type={e.type}

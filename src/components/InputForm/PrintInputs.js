@@ -6,6 +6,7 @@ import { useAppContext } from '../../appContext'
 import { MdCalendarViewMonth, MdCheckBox, MdCheckBoxOutlineBlank, MdOutlineEditCalendar } from 'react-icons/md'
 import SIRUTA, { getSiruta } from '../../../lib/siruta'
 import moment from 'moment'
+import { FaRegSquare, FaRegCheckSquare} from "react-icons/fa"
 
 export default function PrintInputs({ type, kkey, value, label, options }) {
 
@@ -20,7 +21,7 @@ export default function PrintInputs({ type, kkey, value, label, options }) {
                 && <div style = {{lineHeight:0.5}}>
                     <Typography variant = "caption">{label}</Typography><br />
                     <div align="center">
-                    <strong>{value ?? "---"}</strong>
+                    <strong><small>{value ?? "---"}</small></strong>
                     </div>
                     <br/><br/>
 
@@ -43,12 +44,14 @@ export default function PrintInputs({ type, kkey, value, label, options }) {
 
                     {options.map((e, i) => (
                         <Grid item key={i}>
-                            <Grid container alignItems="center">
+                            <Grid container>
                             <Grid item>
-                            <Typography variant="caption">{e.label}</Typography>
+                            {/* <Typography variant="caption">{e.label}</Typography> */}
+                            <small>{e.label}</small>
                             </Grid>
-                            <Grid item>
-                                <input type="checkbox" defaultChecked = {Boolean(e.value) === Boolean(value)} />
+                            <Grid item style = {{paddingTop: "3px", paddingLeft: "2px"}}>
+                                {/* <input type="checkbox"  defaultChecked = {Boolean(e.value) === Boolean(value)} /> */}
+                               {Boolean(e.value) === Boolean(value) ? <FaRegSquare/> : <FaRegCheckSquare/>} 
                      
                             </Grid>
                             </Grid>
@@ -63,7 +66,7 @@ export default function PrintInputs({ type, kkey, value, label, options }) {
 
                     {value == 1
                         ? <>
-                        <MdCheckBox size = "1em"/>
+                        <MdCheckBox size = "1em" color="black"/>
                             {' '}
                             <Typography variant="caption">{label}</Typography>
                         </>
