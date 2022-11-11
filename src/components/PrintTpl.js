@@ -34,6 +34,7 @@ const RenderForm = ({ data }) => {
                     label={e.label}
                     options={e.options}
                   />
+                  
                 </Grid>
                 )
                 : null  

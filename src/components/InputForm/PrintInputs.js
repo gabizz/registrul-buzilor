@@ -21,7 +21,7 @@ export default function PrintInputs({ type, kkey, value, label, options }) {
                 && <div style = {{lineHeight:0.5}}>
                     <Typography variant = "caption">{label}</Typography><br />
                     <div align="center">
-                    <strong><small>{value ?? "---"}</small></strong>
+                    <strong><small><del>{value ?? "---"}</del></small></strong>
                     </div>
                     <br/><br/>
 

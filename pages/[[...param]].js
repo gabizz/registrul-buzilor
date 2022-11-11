@@ -20,6 +20,7 @@ import DeclaratieEpurare from '../src/components/InputForm/DeclaratieEpurare';
 import InstructionsModal from '../src/components/InstructionsModal';
 import { MyTab, MyTabs } from '../src/components/MyTabs';
 import PrintPreviewModal from '../src/components/PrintPreviewModal';
+import DebugDrawer from '../src/components/DebugDrawer';
 
 
 const decoder = (string) => {
@@ -55,6 +56,7 @@ export default function Index({ b64 }) {
   const classes = useStyles()
   const [ctx, setCtx] = useAppContext()
   const router = useRouter()
+  const [debugData, setDebugData] = useState()
 
 
 
@@ -132,7 +134,9 @@ export default function Index({ b64 }) {
           </Menu>
           </Grid>
           <Grid item sm = {true}>
-          <IconButton size="small" color="info" onClick={() => setCtx({ info: true })}>
+          <IconButton size="small" color="info" onClick={() => setCtx({ info: true })} 
+            onContextMenu = {ev => {ev.preventDefault();setDebugData(ctx.state)}}
+            >
             <FaInfoCircle size="1.5em" />
           </IconButton>
           </Grid>
@@ -171,6 +175,7 @@ export default function Index({ b64 }) {
       {ctx.notify && <Notification open={ctx.notify} duration={3000} />}
       {ctx.info && <InstructionsModal open={ctx.info} onClose={() => setCtx({ info: null })} />}
       {ctx.print && <PrintPreviewModal open={ctx.print} onClose={() => setCtx({ print: null })} />} 
+      {debugData && <DebugDrawer open = {debugData} onClose = {()=>setDebugData(null)}/>}
 
     </Fragment>
 

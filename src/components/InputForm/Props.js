@@ -34,7 +34,7 @@ export const DATE_GENERALE =  [
     ]
    
     export const DECLARATIE_COLECTARE = [
-            
+
             {type:
                  "divider", sm: 10, 
                  label: "Dețineți autorizație de construire pentru sistemul individual adecvat de colectare?",
@@ -203,6 +203,16 @@ export const DATE_GENERALE =  [
     
 
     export const DECLARATIE_EPURARE = [
+        {type:
+            "divider", sm: 10, 
+            label: "Număr persoane deservite de SIA epurare (locuitori)?",
+            value: true
+        },
+        {
+            key: "c0", type: "number",
+            label: "Nr.",
+            sm:2,
+        },
         {type: "divider", sm: 12, label: <Divider/>},
         {type:
             "divider", sm: 10,
@@ -357,6 +367,14 @@ export const DATE_GENERALE =  [
         type: "radio", 
         options: [{value: 1, label: "DIRECTĂ"}, {value: 0, label: "INDIRECTĂ"} ],
         printSm:3
+    },
+    { type:"divider",  sm: 12,   label: <Divider/> },
+    { type: "divider", sm: 4, label: "Cine exploatează și operează SIA?", value: true},
+    { 
+        key: "e130",
+        type: "text",
+        sm: 8,
+        label: "specificați cine exploatează și operează SIA"
     },
     { type:"divider",  sm: 12,   label: <Divider/> },
     {
